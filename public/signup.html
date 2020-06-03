@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Project Tracker | Sign Up</title>
+    </head>
+    <body>
+        <h1>Sign Up</h1>
+        <form class="signup-form" name="signup" method="POST" action="/signup">
+            <label for="username">Username:</label>
+            <input
+                class="username-input"
+                name="username"
+                type="text"
+                required
+            />
+            <br />
+            <label for="password">Password:</label>
+            <input
+                class="password-input"
+                name="password"
+                type="password"
+                required
+            />
+            <br />
+            <p>Are you a project administrator?</p>
+            <div>
+                <input type="radio" id="admin-true" name="admin" value="1" />
+                <label for="admin-true">Yes</label> <br />
+                <input type="radio" id="admin-false" name="admin" value="0" />
+                <label for="admin-false">No</label>
+            </div>
+            <br />
+
+            <button class="submit-button" type="submit">Sign Up</button>
+        </form>
+    </body>
+</html>

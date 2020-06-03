@@ -5,7 +5,7 @@
         "database": "planning_board",
         "host": "127.0.0.1",
         "dialect": "mysql",
-        "operatorsAliases": false
+        "operatorsAliases": "0"
     },
     "production": {
         "username": "root",
@@ -13,6 +13,6 @@
         "database": "planning_board",
         "host": "127.0.0.1",
         "dialect": "mysql",
-        "operatorsAliases": false
+        "operatorsAliases": "0"
     }
 }
