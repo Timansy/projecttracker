@@ -1,16 +1,17 @@
 module.exports = function (sequelize, DataTypes) {
     var User = sequelize.define("User", {
         username: DataTypes.STRING,
+        email: DataTypes.STRING,
         password: DataTypes.INTEGER,
-        admin: DataTypes.BOOLEAN
+        auth_level: {
+            type: DataTypes.STRING,
+            isIn: [['administrator','project_manager','developer']]
+        }
     });
 
     User.associate = (models) => {
-        User.belongsTo(models.Project, {
-            foreignKey: {
-                allowNull: false
-            }
-        });
+        User.hasMany(models.Project,{});
+        User.hasMany(models.Task,{});
     };
 
     return User;
