@@ -1,7 +1,7 @@
 require("dotenv");
 
 var express = require("express");
-var models = require("models");
+var db = require("./models");
 
 var app = expres();
 var PORT = process.env.PORT || 8080;
