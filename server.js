@@ -1,9 +1,9 @@
-require("dotenv");
+require('dotenv');
 
-var express = require("express");
-var passport = require("passport");
-var session = require("express-session");
-var db = require("./models");
+var express = require('express');
+var passport = require('passport');
+var session = require('express-session');
+var db = require('./models');
 
 var app = express();
 var PORT = process.env.PORT || 8080;
@@ -11,24 +11,27 @@ var PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static("public"));
+app.use(express.static('public'));
 
 // Passport Middleware
 app.use(
-    session({ secret: "sequelize it", resave: true, saveUninitialized: true })
+    session({ secret: 'sequelize it', resave: true, saveUninitialized: true })
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-require("./routes/user-api-routes")(app);
-require("./routes/auth-routes")(app, passport);
+require('./routes/user-api-routes')(app);
+require('./routes/project-api-routes')(app);
+require('./routes/phase-api-routes')(app);
+require('./routes/task-api-routes')(app);
+require('./routes/auth-routes')(app, passport);
 
 // Passport Strategies
-require("./config/passport.js")(passport, db.User);
+require('./config/passport.js')(passport, db.User);
 
 db.sequelize.sync({ force: false }).then(function () {
     app.listen(PORT, function () {
-        console.log("App listening on PORT " + PORT);
+        console.log('App listening on PORT ' + PORT);
     });
 });

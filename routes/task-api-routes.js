@@ -1,18 +1,18 @@
 const db = require('../models');
 
 module.exports = (app) => {
-    // GET all users
-    app.get('/api/users', (req, res) => {
-        db.User.findAll({})
+    // GET route for all tasks
+    app.get('/api/tasks', (req, res) => {
+        db.Task.findAll({})
             .then((data) => res.json(data))
             .catch((err) => {
                 if (err) throw err;
             });
     });
 
-    // GET one user
-    app.get('/api/users/:id', (req, res) => {
-        db.User.findOne({
+    // GET route for one task
+    app.get('/api/tasks/:id', (req, res) => {
+        db.Task.findOne({
             where: {
                 id: req.params.id
             }
@@ -23,18 +23,18 @@ module.exports = (app) => {
             });
     });
 
-    // POST new user
-    app.post('/api/users', (req, res) => {
-        db.User.create(req.body)
+    // POST route for new task
+    app.post('/api/tasks', (req, res) => {
+        db.Task.create(req.body)
             .then((data) => res.json(data))
             .catch((err) => {
                 if (err) throw err;
             });
     });
 
-    // DELETE one user
-    app.delete('/api/users/:id', (req, res) => {
-        db.User.destroy({
+    // DELETE route for one task
+    app.delete('/api/tasks/:id', (req, res) => {
+        db.Task.destroy({
             where: {
                 id: req.params.id
             }
@@ -45,11 +45,11 @@ module.exports = (app) => {
             });
     });
 
-    // PUT route for updating User
-    app.put('/api/users', (req, res) => {
-        console.log('User Update: ', req.body);
+    // PUT route for updating project
+    app.put('/api/tasks', (req, res) => {
+        console.log('Task Update: ', req.body);
 
-        db.User.update(req.body, {
+        db.Task.update(req.body, {
             where: {
                 id: req.body.id
             }

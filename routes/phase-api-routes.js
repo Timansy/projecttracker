@@ -1,18 +1,18 @@
 const db = require('../models');
 
 module.exports = (app) => {
-    // GET all users
-    app.get('/api/users', (req, res) => {
-        db.User.findAll({})
+    // GET route for every project phase
+    app.get('/api/project-phase', (req, res) => {
+        db.ProjectPhase.findAll({})
             .then((data) => res.json(data))
             .catch((err) => {
                 if (err) throw err;
             });
     });
 
-    // GET one user
-    app.get('/api/users/:id', (req, res) => {
-        db.User.findOne({
+    // GET route for one project phase
+    app.get('/api/project-phase/:id', (req, res) => {
+        db.ProjectPhase.findOne({
             where: {
                 id: req.params.id
             }
@@ -23,18 +23,18 @@ module.exports = (app) => {
             });
     });
 
-    // POST new user
-    app.post('/api/users', (req, res) => {
-        db.User.create(req.body)
+    // POST route for new project phase
+    app.post('/api/project-phase', (req, res) => {
+        db.ProjectPhase.create(req.body)
             .then((data) => res.json(data))
             .catch((err) => {
                 if (err) throw err;
             });
     });
 
-    // DELETE one user
-    app.delete('/api/users/:id', (req, res) => {
-        db.User.destroy({
+    // DELETE route for one project phase
+    app.delete('/api/project-phase/:id', (req, res) => {
+        db.ProjectPhase.destroy({
             where: {
                 id: req.params.id
             }
@@ -45,11 +45,11 @@ module.exports = (app) => {
             });
     });
 
-    // PUT route for updating User
-    app.put('/api/users', (req, res) => {
-        console.log('User Update: ', req.body);
+    // PUT route for updating project
+    app.put('/api/project-phase', (req, res) => {
+        console.log('Phase Update: ', req.body);
 
-        db.User.update(req.body, {
+        db.ProjectPhase.update(req.body, {
             where: {
                 id: req.body.id
             }
