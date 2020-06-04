@@ -16,7 +16,20 @@ module.exports = (app, passport) => {
     });
 
     app.get("/dashboard", isLoggedIn, (req, res) => {
-        res.sendFile(path.join(__dirname, "../public/dashboard.html"));
+        let authLevel = req.user.auth_level;
+
+        // Sends view to user based on auth level
+        switch (authLevel) {
+            case "administrator":
+                res.sendFile(path.join(__dirname, "../public/dashboard.html"));
+                break;
+            case "project_manager":
+                res.sendFile(path.join(__dirname, "../public/pm-view.html"));
+                break;
+            case "developer":
+                res.sendFile(path.join(__dirname, "../public/dev-view.html"));
+                break;
+        }
     });
 
     // Destroys session and redirects to home page
