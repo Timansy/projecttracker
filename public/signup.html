@@ -24,12 +24,29 @@
                 required
             />
             <br />
-            <p>Are you a project administrator?</p>
+            <p>Please select your role:</p>
             <div>
-                <input type="radio" id="admin-true" name="admin" value="1" />
-                <label for="admin-true">Yes</label> <br />
-                <input type="radio" id="admin-false" name="admin" value="0" />
-                <label for="admin-false">No</label>
+                <input
+                    type="radio"
+                    id="admin"
+                    name="auth_level"
+                    value="administrator"
+                />
+                <label for="admin">Administrator</label> <br />
+                <input
+                    type="radio"
+                    id="proj-manager"
+                    name="auth_level"
+                    value="project_manager"
+                />
+                <label for="proj-manager">Project Manager</label> <br />
+                <input
+                    type="radio"
+                    id="dev"
+                    name="auth_level"
+                    value="developer"
+                />
+                <label for="dev">Developer</label>
             </div>
             <br />
 

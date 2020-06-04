@@ -43,7 +43,7 @@ module.exports = (passport, user) => {
                         let data = {
                             username: username,
                             password: userPassword,
-                            admin: req.body.admin
+                            auth_level: req.body.auth_level
                         };
 
                         User.create(data).then((user, created) => {
