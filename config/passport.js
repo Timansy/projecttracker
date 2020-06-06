@@ -1,132 +1,46 @@
-// Used to secure passwords
-const bCrypt = require("bcrypt-nodejs");
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
 
-// Passport Strategies
-module.exports = (passport, user) => {
-    let User = user;
-    let LocalStrategy = require("passport-local").Strategy;
+var db = require("../models");
 
-    // SIGN UP
-    passport.use(
-        "local-signup",
-        new LocalStrategy(
-            {
-                usernameField: "username",
-                passwordField: "password",
-                passReqToCallback: true // passes entire request to callback
-            },
-            (req, username, password, done) => {
-                // Generates hashed password
-                let genHash = (password) => {
-                    return bCrypt.hashSync(
-                        password,
-                        bCrypt.genSaltSync(),
-                        null
-                    );
-                };
-
-                // Querying DB for entered username...
-                User.findOne({
-                    where: {
-                        username: username
-                    }
-                }).then((user) => {
-                    // If username exists in DB...
-                    if (user) {
-                        return done(null, false, {
-                            message: "That username is taken."
-                        });
-                    } else {
-                        // Generating hashed password from user password input
-                        let userPassword = genHash(password);
-
-                        let data = {
-                            username: username,
-                            password: userPassword,
-                            auth_level: req.body.auth_level
-                        };
-
-                        User.create(data).then((user, created) => {
-                            if (!user) {
-                                return done(null, false);
-                            } else {
-                                return done(null, user);
-                            }
-                        });
-                    }
-                });
-            }
-        )
-    );
-
-    // LOGIN
-    passport.use(
-        "local-login",
-        new LocalStrategy(
-            {
-                usernameField: "username",
-                passwordField: "password",
-                passReqToCallback: true
-            },
-            (req, username, password, done) => {
-                let User = user;
-
-                // Compares entered password using bCrypt compare method
-                let isValidPassword = (userInput, password) => {
-                    return bCrypt.compareSync(password, userInput);
-                };
-
-                // Finding username in DB
-                User.findOne({
-                    where: {
-                        username: username
-                    }
-                })
-                    .then((user) => {
-                        // If username is not in DB...
-                        if (!user) {
-                            return done(null, false, {
-                                message: "Username does not exist!"
-                            });
-                        }
-                        // If password input does not match password...
-                        if (!isValidPassword(user.password, password)) {
-                            return done(null, false, {
-                                message: "Incorrect password!"
-                            });
-                        }
-
-                        return done(null, user.get());
-                    })
-                    .catch((err) => {
-                        if (err) throw err;
-
-                        return done(null, false, {
-                            message: "Login failed!"
-                        });
-                    });
-            }
-        )
-    );
-
-    // Saves the user id to the session
-    passport.serializeUser((user, done) => {
-        done(null, user.id);
+// Telling passport we want to use a Local Strategy. In other words, we want login with a username/email and password
+passport.use(new LocalStrategy(
+  {
+    usernameField: "username"
+  },
+  function(username, password, done) {
+    // When a user tries to sign in this code runs
+    db.User.findOne({
+      where: {
+        username: username
+      }
+    }).then(function(dbUser) {
+      if (!dbUser) {
+        return done(null, false, {
+          message: "Incorrect username."
+        });
+      }
+      else if (dbUser.password != password) {
+        return done(null, false, {
+          message: "Incorrect password."
+        });
+      }
+      // If none of the above, return the user
+      return done(null, dbUser);
     });
+  }
+));
 
-    // Use findOne promise to get user, returns instance of User model
-    passport.deserializeUser((id, done) => {
-        User.findOne({
-            where: {
-                id: id
-            }
-        })
-            .then((user) => {
-                if (user) done(null, user.get());
-                else done(user.errors, null);
-            })
-            .catch((err) => {
-                if (err) throw err;
-            });
-    });
-};
+// In order to help keep authentication state across HTTP requests,
+// Sequelize needs to serialize and deserialize the user
+// Just consider this part boilerplate needed to make it all work
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
+
+// Exporting our configured passport
+module.exports = passport;

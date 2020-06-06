@@ -1,17 +1,24 @@
+// Creating our User model
 module.exports = function (sequelize, DataTypes) {
-    var User = sequelize.define("User", {
-        username: DataTypes.STRING,
-        password: DataTypes.STRING,
-        auth_level: {
-            type: DataTypes.STRING,
-            isIn: [["administrator", "project_manager", "developer"]]
-        }
-    });
+  var User = sequelize.define("User", {
+    username: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    auth_level: {
+      type: DataTypes.STRING,
+      isIn: [["administrator", "project_manager", "developer"]],
+      defaultValue: "administrator"
+    },
+  });
 
-    User.associate = (models) => {
-        User.hasMany(models.Project, {});
-        User.hasMany(models.Task, {});
-    };
+  User.associate = (models) => {
+    User.hasMany(models.Project, {});
+    User.hasMany(models.Task, {});
+  };
 
-    return User;
+  //could add bcrypt stuff??
+
+  return User;
 };

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Passport Authentication</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css">
+  <link href="stylesheets/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <span class="member-id"></span> | <span class="member-name"></span> | <span class="member-auth_level"></span>
+      &nbsp;|&nbsp;Select your authorization level: <select class="auth_selector" name="auth_level" id="auth_level_selector">
+        <option value="administrator">Administrator</option>
+        <option value="project_manager">Project Manager</option>
+        <option value="developer" selected>Developer</option>
+      </select>
+      &nbsp;|&nbsp;
+      <a href="/logout">
+        Logout
+      </a>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid">
+  <div class="row board card-deck">
+      <div class="card task-card" style="width: 18rem;">
+          <div class="card-body">
+              <h3>Task 1</h3>
+              <ul>
+                  <li>
+                      <h5>Status:</h5>
+                      <div class="dropdown">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="taskStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Current Status
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <a class="dropdown-item" href="#" id="onHold">On Hold</a>
+                              <a class="dropdown-item" href="#" id="working">Working</a>
+                              <a class="dropdown-item" href="#" id="complete">Complete</a>
+                          </div>
+                      </div>
+                  </li>
+                  <li>
+                      <h5>Phase:</h5>
+                      <div class="dropdown">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="taskPhase" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Current Phase
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <a class="dropdown-item" href="#" id="onHold">Design</a>
+                              <a class="dropdown-item" href="#" id="working">Development</a>
+                              <a class="dropdown-item" href="#" id="complete">Testing</a>
+                              <a class="dropdown-item" href="#" id="complete">Production</a>
+                          </div>
+                      </div>
+                  </li>
+              </ul>
+          </div>
+      </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="js/dev.js"></script>
+
+</body>
+
+</html>

@@ -1,56 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Project Tracker | Sign Up</title>
-    </head>
-    <body>
-        <h1>Sign Up</h1>
-        <form class="signup-form" name="signup" method="POST" action="/signup">
-            <label for="username">Username:</label>
-            <input
-                class="username-input"
-                name="username"
-                type="text"
-                required
-            />
-            <br />
-            <label for="password">Password:</label>
-            <input
-                class="password-input"
-                name="password"
-                type="password"
-                required
-            />
-            <br />
-            <p>Please select your role:</p>
-            <div>
-                <input
-                    type="radio"
-                    id="admin"
-                    name="auth_level"
-                    value="administrator"
-                />
-                <label for="admin">Administrator</label> <br />
-                <input
-                    type="radio"
-                    id="proj-manager"
-                    name="auth_level"
-                    value="project_manager"
-                />
-                <label for="proj-manager">Project Manager</label> <br />
-                <input
-                    type="radio"
-                    id="dev"
-                    name="auth_level"
-                    value="developer"
-                />
-                <label for="dev">Developer</label>
-            </div>
-            <br />
 
-            <button class="submit-button" type="submit">Sign Up</button>
+<head>
+  <title>Passport Authentication</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css">
+  <link href="stylesheets/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <h2>Sign Up Form</h2>
+        <form class="signup">
+          <div class="form-group">
+            <label for="exampleInputUsername1">User Name</label>
+            <input type="username" class="form-control" id="username-input" placeholder="Username">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="password-input" placeholder="Password">
+          </div>
+          <div style="display: none" id="alert" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span> <span class="msg"></span>
+          </div>
+          <button type="submit" class="btn btn-default">Sign Up</button>
         </form>
-    </body>
+        <br />
+        <p>Or log in <a href="/login">here</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="js/signup.js"></script>
+
+</body>
+
 </html>
