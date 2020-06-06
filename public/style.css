@@ -36,7 +36,7 @@ body {
   outline: none;
   color: #192a56;
   border-radius: 28px;
-  transition: 0.25s;
+  transition: 2s;
 }
 
 .box input[type="text"]:focus,
