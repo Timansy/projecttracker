@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  var usedID;
+  
   // This file just does a GET request to figure out which user is logged in
   // and updates the HTML on the page
   $.get("/api/user_data").then(function (data) {
@@ -7,6 +9,7 @@ $(document).ready(function () {
     $(".member-id").text(data.id);
     $(".member-auth_level").text(`administrator`);
     // window.location.replace(`/${data.auth_level}`);
+    usedID = data.id;
   });
 
   $(".auth_selector").change(function () {

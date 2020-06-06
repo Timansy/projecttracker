@@ -10,7 +10,7 @@ $(document).ready(function () {
   let url = window.location.href;
   //disabled this so it would be handelled below.
   // let userId = +url.split('/')[4];
-  let userId;
+  var userId;
   
   
   // This file just does a GET request to figure out which user is logged in
