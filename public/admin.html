@@ -69,6 +69,37 @@
             </form>
         </div>
 
+        <div>
+            <h3>Create New User:</h3>
+            <form class="user-form">
+                <label for="username">Username:</label>
+                <input id="username-input" type="text" name="username" /><br />
+                <label for="password">Password:</label>
+                <input
+                    id="password-input"
+                    type="password"
+                    name="password"
+                /><br />
+                <label for="password-confirm">Confrim Password:</label>
+                <input
+                    id="confirm-input"
+                    type="password"
+                    name="password-confirm"
+                />
+                <span class="password-auth"></span><br />
+                <label for="roles">Select Role:</label>
+                <select name="roles" id="roles">
+                    <option value="project_manager">Project Manager</option>
+                    <option value="delevoper">Developer</option>
+                </select>
+
+                <br />
+                <button class="new-user-btn" type="submit">
+                    Create User
+                </button>
+            </form>
+        </div>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type="text/javascript" src="js/admin.js"></script>
     </body>
