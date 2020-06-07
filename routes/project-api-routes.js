@@ -10,11 +10,11 @@ module.exports = (app) => {
             });
     });
 
-    // GET route for one project
-    app.get('/api/projects/:id', (req, res) => {
-        db.Project.findOne({
+    // GET route for all  projects by user
+    app.get('/api/projects/:userId', (req, res) => {
+        db.Project.findAll({
             where: {
-                id: req.params.id
+                UserId: req.params.userId
             }
         })
             .then((data) => res.json(data))
