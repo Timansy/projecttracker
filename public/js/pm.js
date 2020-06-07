@@ -12,6 +12,9 @@ $(document).ready(function() {
 
     let addTaskBtn = $("#addTaskBtn");
     let taskSubmit = $("#taskSubmit");
+    let taskTitleInput = $("#task-title");
+    let taskPhaseId = $("#phaseId");
+    let taskAssigneeId = $("#assigneeId");
 
     // Grabbing the URL, splitting it up into an array by '/', grabbing the last item in array and setting to integer
     // Storing to memory to be used when creating a new project or accessing an already created project
@@ -65,8 +68,11 @@ $(document).ready(function() {
         );
     };
 
+
+    // START THE SAVE FUNCTIONS FOR PHASE SUBMISSION
     $(phaseSubmit).on('click', handleNewPhase);
 
+    // MAKES A NEW PHASE OBJECT TO BE PUT INTO THE DB
     function handleNewPhase(event) {
         event.preventDefault();
         let newPhase = phaseTitleInput.val().trim();
@@ -81,6 +87,7 @@ $(document).ready(function() {
         phaseTitleInput.val("")
     }
 
+    // POSTS THE NEW PHASE OBJECT IN THE DB
     function createPhase(phaseData) {
         console.log(phaseData);
         $.post('/api/project-phase', phaseData).then(
@@ -110,13 +117,97 @@ $(document).ready(function() {
         phaseProjectId.val(projectId);
     }
 
-    // Creates the author options in the dropdown
     function createProjectRow(project) {
         var listOption = $("<option>");
         listOption.attr("value", project.id);
         listOption.text(project.title);
         return listOption;
     }
+
+    // STARTS THE SAVE FUNCTION FOR TASKS SUBMISSION
+    $(taskSubmit).on('click', handleNewTask);
+
+    //CREATES A NEW TASK OBJECT TO BE PUT IN THE DB
+    function handleNewTask(event) {
+        event.preventDefault();
+        let newTask = taskTitleInput.val().trim();
+        if (!newTask) {
+            return;
+        } else
+            createTask({
+                taskname: newTask,
+                isComplete: false,
+                ProjectPhaseId: $("#phaseId").val(),
+                UserId: $("#assigneeId").val()
+            });
+    }
+
+    //POST THE NEW TASK ITEM IN THE DB
+    function createTask(taskData) {
+        console.log(taskData);
+        $.post('/api/tasks', taskData).then(
+            console.log('New Task Created!')
+        );
+    };
+
+    // GETS PHASES TO POPULATE THE PHASE LIST FOR PHASE ID IN TASK OBJECT
+    let phaseId;
+
+    getPhases();
+
+    function getPhases() {
+        $.get("/api/project-phase", renderPhaseList)
+    }
+
+    function renderPhaseList(data) {
+        var rowsToAdd = [];
+        for (var i = 0; i < data.length; i++) {
+            rowsToAdd.push(createPhaseRow(data[i]));
+        }
+        taskPhaseId.empty();
+        console.log(rowsToAdd);
+        console.log(taskPhaseId);
+        taskPhaseId.append(rowsToAdd);
+        taskPhaseId.val(phaseId);
+    }
+
+    function createPhaseRow(phase) {
+        var listOption = $("<option>");
+        listOption.attr("value", phase.id);
+        listOption.text(phase.title);
+        return listOption;
+    }
+
+
+    // GETS THE USERS TO POPULATE THE ASSIGNEE LIST FOR THE TASK OBJECT
+    let assigneeId;
+
+    getAssignees();
+
+    function getAssignees() {
+        $.get("/api/users", renderAssigneeList)
+    }
+
+    function renderAssigneeList(data) {
+        var rowsToAdd = [];
+        for (var i = 0; i < data.length; i++) {
+            rowsToAdd.push(createAssigneeRow(data[i]));
+        }
+        taskAssigneeId.empty();
+        console.log(rowsToAdd);
+        console.log(taskAssigneeId);
+        taskAssigneeId.append(rowsToAdd);
+        taskAssigneeId.val(assigneeId);
+    }
+
+    // Creates the author options in the dropdown
+    function createAssigneeRow(assignee) {
+        var listOption = $("<option>");
+        listOption.attr("value", assignee.id);
+        listOption.text(assignee.username);
+        return listOption;
+    }
+
 
     $(addProjectBtn).on("click", function() {
         $("#projectCollapse.collapse").toggleClass("show")
