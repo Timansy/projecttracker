@@ -29,7 +29,6 @@ $(document).ready(function () {
 
     $('.project-form').on('submit', handleNewProjSubmit);
 
-    // Creates new project
     function handleNewProjSubmit(event) {
         event.preventDefault();
 
@@ -75,6 +74,7 @@ $(document).ready(function () {
     // Makes all users available in Select Project Manager drop down
     function populateManagerOptions() {
         $.get(`/api/users`).then(function (data) {
+            $('#project-managers').empty();
             data.forEach((user) => {
                 $('#project-managers').append(`
                   <option value="${user.id}">${user.username}</option>
@@ -82,4 +82,38 @@ $(document).ready(function () {
             });
         });
     }
+
+    $('.user-form').on('submit', handleNewUserSubmit);
+
+    function handleNewUserSubmit(event) {
+        event.preventDefault();
+        $('.password-auth').empty();
+
+        let usernameInput = $('#username-input').val().trim();
+        let passwordInput = $('#password-input').val().trim();
+        let confirmInput = $('#confirm-input').val().trim();
+        let roleInput = $('#roles').val().trim();
+
+        if (passwordInput === confirmInput) {
+            console.log(usernameInput, passwordInput, roleInput);
+
+            createUser(usernameInput, passwordInput, roleInput);
+
+            populateManagerOptions();
+        } else {
+            $('.password-auth').empty();
+            $('.password-auth').append(`<p>Password Does Not Match</p>`);
+        }
+    }
+
+    // Creates new user and posts to DB from user input
+    function createUser(username, password, authLevel) {
+        $.post('/api/users', {
+            username: username,
+            password: password,
+            auth_level: authLevel
+        });
+    }
+
+    function appendPasswordAlert() {}
 });
