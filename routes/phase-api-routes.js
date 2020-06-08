@@ -11,13 +11,29 @@ module.exports = (app) => {
     });
 
     // GET route for one project phase
-    app.get('/api/project-phase/:id', (req, res) => {
+    app.get('/api/project-phase/phase_id=:id', (req, res) => {
         db.ProjectPhase.findOne({
             where: {
                 id: req.params.id
             }
         })
             .then((data) => res.json(data))
+            .catch((err) => {
+                if (err) throw err;
+            });
+    });
+
+    // GET Phases associated with a specific project
+    app.get('/api/project-phase/project_id=:projectId', (req, res) => {
+        // console.log(req.params.projectId);
+        db.ProjectPhase.findAll({
+            where: {
+                ProjectId: req.params.projectId
+            }
+        })
+            .then((data) => {
+                res.json(data);
+            })
             .catch((err) => {
                 if (err) throw err;
             });
