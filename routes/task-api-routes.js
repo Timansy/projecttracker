@@ -23,6 +23,23 @@ module.exports = (app) => {
             });
     });
 
+    // GET project specific Tasks by user id and phase id -- arranges by Phase ID in ascending order
+    app.get('/api/tasks/user_id=:userId/phase_id=:phaseId', (req, res) => {
+        console.log(req.params);
+        db.Task.findAll({
+            where: {
+                UserId: req.params.userId,
+                ProjectPhaseId: req.params.phaseId
+            }
+        })
+            .then((data) => {
+                res.json(data);
+            })
+            .catch((err) => {
+                if (err) throw err;
+            });
+    });
+
     // POST route for new task
     app.post('/api/tasks', (req, res) => {
         db.Task.create(req.body)
