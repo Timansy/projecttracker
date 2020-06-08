@@ -4,6 +4,7 @@ $(document).ready(function() {
     let projectLinkName = $('.project-link');
     let phasesDeck = $('.phases-deck');
     let phaseCard = $('.phase-card');
+    let projectContainer = $("#project-nav")
 
     let addPhaseBtn = $("#addPhaseBtn");
     let phaseSubmit = $("#phaseSubmit");
@@ -45,29 +46,8 @@ $(document).ready(function() {
     });
 
 
-    $(addProjectBtn).on('click', handleNewProject);
-
-    function handleNewProject(event) {
-        event.preventDefault();
-        let newProject = projectTitleInput.val().trim();
-        // console.log(newProject);
-        if (!newProject) {
-            return;
-        } else
-            createProject({
-                title: newProject,
-                complete: false,
-                UserId: userId
-            });
-    }
-
-    function createProject(projectData) {
-        console.log(projectData);
-        $.post('/api/projects', projectData).then(
-            console.log('New Project Created!')
-        );
-    };
-
+    //--------------------------------------------------------------------------------------//
+    // PHASE SUBMISSION //
 
     // START THE SAVE FUNCTIONS FOR PHASE SUBMISSION
     $(phaseSubmit).on('click', handleNewPhase);
@@ -91,7 +71,7 @@ $(document).ready(function() {
     function createPhase(phaseData) {
         console.log(phaseData);
         $.post('/api/project-phase', phaseData).then(
-            console.log('New Phase Created!')
+            getProjectPhases
         );
     };
 
@@ -124,6 +104,10 @@ $(document).ready(function() {
         return listOption;
     }
 
+    // --------------------------------------------------------------------------------//
+    // TASK SUBMISSION //
+
+
     // STARTS THE SAVE FUNCTION FOR TASKS SUBMISSION
     $(taskSubmit).on('click', handleNewTask);
 
@@ -140,13 +124,14 @@ $(document).ready(function() {
                 ProjectPhaseId: $("#phaseId").val(),
                 UserId: $("#assigneeId").val()
             });
+        taskTitleInput.val("")
     }
 
     //POST THE NEW TASK ITEM IN THE DB
     function createTask(taskData) {
         console.log(taskData);
         $.post('/api/tasks', taskData).then(
-            console.log('New Task Created!')
+            getPhaseTasks
         );
     };
 
@@ -208,16 +193,123 @@ $(document).ready(function() {
         return listOption;
     }
 
+    // ----------------------------------------------------------------------------//
+    // PROJECT NAV BAR POPULATION //
+    getNavBarProjects()
 
+    function getNavBarProjects() {
+        $.get("/api/projects", function(data) {
+            initializeProjectNav(data)
+        });
+    };
+
+
+    function initializeProjectNav(projects) {
+        projectContainer.empty();
+        var projectsToAdd = [];
+        for (let i = 0; i < projects.length; i++) {
+            projectsToAdd.push(createNewProject(projects[i]));
+        }
+        projectContainer.append(projectsToAdd)
+    }
+
+    function createNewProject(projects) {
+        var newProject = `
+                 <li class="nav-item">
+                     <a class="nav-link" value="${projects.id}" href="#">${projects.title}</a>
+                </li>`;
+
+        return newProject
+    }
+
+    // --------------------------------------------------------------------------------------------//
+    // PHASES POPULATION FOR PROJECT BOARD //
+
+    getProjectPhases()
+
+    function getProjectPhases() {
+        $.get("/api/project-phase", function(data) {
+            initializeProjectPhases(data)
+        });
+    };
+
+    function initializeProjectPhases(phases) {
+        phasesDeck.empty();
+        var phasesToAdd = [];
+        for (let i = 0; i < phases.length; i++) {
+            phasesToAdd.push(createNewPhase(phases[i]));
+        }
+        phasesDeck.append(phasesToAdd)
+    }
+
+    function createNewPhase(phases) {
+        var newPhase = `
+        <div class="phase-card card col-fluid" id="phase-card" style="width: 18rem;">
+        <div class="card-body">
+            <h3>${phases.title}</h3>
+        </div>
+        <div class="card-body" value="${phases.id}" id="task-container">
+        </div>
+        </div>`;
+
+        return newPhase
+    }
+
+    // ------------------------------------------------------------------------------------------//
+    // TASK POPULATION FOR PHASES //
+
+    getPhaseTasks()
+
+    function getPhaseTasks() {
+        $.get("/api/tasks", function(tasks) {
+            $.get("/api/project-phase", function(phases) {
+                initializePhaseTasks(tasks, phases)
+            })
+        })
+    }
+
+    function initializePhaseTasks(tasks, phases) {
+        var taskContainers = document.querySelectorAll("#task-container");
+
+        var phasesToAdd = []
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks.ProjectPhaseId == phases.id) {
+                phasesToAdd.push(createNewTask(tasks[i]))
+            }
+        }
+        console.log(phasesToAdd)
+
+    }
+
+    function createNewTask(tasks) {
+        var newTask = `
+        <div class="card task-card" value="${tasks.ProjectPhaseId} style="width:auto">
+        <div class="card-body">
+            <h5>${tasks.taskname}</h5>
+        </div>
+    </div>`;
+        // <ul>
+        //     <li>Andrew Reeves</li>
+        //     <li>Working</li>
+        // </ul>
+
+        return newTask
+    }
+
+    // ----------------------------------------------------------------------------//
+    // ADDITIONAL FUNCTIONALITY //
     $(addProjectBtn).on("click", function() {
         $("#projectCollapse.collapse").toggleClass("show")
     })
 
     $(addPhaseBtn).on("click", function() {
+        getProjects();
         $("#phaseCollapse.collapse").toggleClass("show")
     })
 
     $(addTaskBtn).on("click", function() {
+        getPhases();
+        getAssignees();
         $("#taskCollapse.collapse").toggleClass("show")
     })
 
