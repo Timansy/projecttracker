@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Project Sprinter</title>
+        <link rel="stylesheet" href="./css/style.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <form class="box reset">
+            <h1>Password Reset</h1>
+            <label for="username-input"></label>
+            <input
+                type="text"
+                class="form-control"
+                id="username-input"
+                name="username-input"
+                placeholder="Username"
+            />
+            <label for="password-input"></label>
+            <input
+                type="password"
+                name="password-input"
+                id="password-input"
+                placeholder="New Password"
+            />
+            <label for="password-confirm"></label>
+            <input
+                type="password"
+                name="password-confirm-input"
+                id="password-confirm-input"
+                placeholder="Confirm Password"
+            />
+            <div
+                style="display: none;"
+                id="alert"
+                class="alert alert-danger"
+                role="alert"
+            >
+                <span
+                    class="glyphicon glyphicon-exclamation-sign"
+                    aria-hidden="true"
+                ></span>
+                <span class="sr-only">Error:</span> <span class="msg"></span>
+            </div>
+
+            <div>
+                <input
+                    type="submit"
+                    class="register-btn"
+                    name="register-btn"
+                    value="Submit"
+                />
+                <input
+                    class="signup-btn"
+                    type="submit"
+                    name=""
+                    value="Not a user? Sign Up"
+                />
+            </div>
+        </form>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/reset.js"></script>
+    </body>
+</html>

@@ -4,6 +4,7 @@ $(document).ready(function () {
     var usernameInput = $('input#username-input');
     var passwordInput = $('input#password-input');
     var registerBtn = $('input.register-btn');
+    var resetBtn = $('input.reset-btn');
 
     // When the form is submitted, we validate there's an email and password entered
     loginForm.on('submit', function (event) {
@@ -42,8 +43,15 @@ $(document).ready(function () {
 
     function handleRegisterRedirect(event) {
         event.preventDefault();
-        console.log('click');
 
         window.location.replace('/signup');
+    }
+
+    resetBtn.on('click', handleResetRedirect);
+
+    function handleResetRedirect(event) {
+        event.preventDefault();
+
+        window.location.replace('/password-reset');
     }
 });
