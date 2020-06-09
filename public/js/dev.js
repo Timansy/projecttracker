@@ -19,10 +19,17 @@ $(document).ready(function () {
         });
     });
 
+    // When specific project button is clicked
+    $('.user-projects').on(
+        'click',
+        'button.project-btn',
+        handleProjectBtnClick
+    );
+
+    // Displays all projects as buttons
     function renderProjectBtns(userId) {
         $.get(`/api/projects/${userId}`).then(function (data) {
-            // console.log(data);
-
+            // Loops through GET data and appends each project
             data.forEach(function (project) {
                 $('.user-projects').append(`
                 <button class="project-btn" id="${project.id}">${project.title}</button)
@@ -30,13 +37,6 @@ $(document).ready(function () {
             });
         });
     }
-
-    // When specific project button is clicked
-    $('.user-projects').on(
-        'click',
-        'button.project-btn',
-        handleProjectBtnClick
-    );
 
     // Handles Project Button click
     function handleProjectBtnClick(event) {
@@ -47,10 +47,8 @@ $(document).ready(function () {
         // 'This' represents the project button that was clicked
         let projectId = $(this).attr('id');
 
-        // console.log(`User Id: ${userId}`);
-        // console.log(`Project Id: ${projectId}`);
-
         // GETS all phases associated with the selected project
+        // I start here because my objective is to obtain all of the users tasks for a particular project. I need to know what phase id the task belongs to.
         $.get(`/api/project-phase/project_id=${projectId}`).then(function (
             phaseData
         ) {
@@ -60,7 +58,7 @@ $(document).ready(function () {
     }
 
     function renderProjectTasks(userId, phaseData) {
-        // Loops through Phase data and gets every task assigned to the user for a specific phase
+        // Loops through Phase data and gets every task assigned to the user for a specific phase -- Appends only tasks associated with the specific project
         phaseData.forEach(function (phase) {
             $.get(`/api/tasks/user_id=${userId}/phase_id=${phase.id}`).then(
                 function (data) {
@@ -71,12 +69,8 @@ $(document).ready(function () {
     }
 
     function appendTasks(taskData) {
-        // console.log(taskData);
-
-        // Loops through all task data and appends task to project task list
         taskData.forEach(function (task) {
-            // console.log(task);
-
+            // Appends all Tasks that have not been completed
             if (!task.isComplete) {
                 $('.tasks-deck').append(`
                     <div class="card task-card" style="width: 18rem;">
@@ -91,10 +85,10 @@ $(document).ready(function () {
                                     <select 
                                       class="status_selector"
                                       name="isComplete"
-                                      id="isComplete_selector"
+                                      id="${task.id}"
                                     >
                                     <option
-                                    value="false" selected>In progress</option>
+                                    value="false">In progress</option>
                                     <option
                                     value="true">Complete</option>
                                 </div>
@@ -104,6 +98,21 @@ $(document).ready(function () {
                     </div>
         `);
             }
+        });
+
+        // Allows the Dev to change the status of their task and will update the DB when a change is made
+        $('.status_selector').change(function () {
+            $.ajax({
+                type: 'PUT',
+                url: '/api/tasks',
+                data: { id: this.id, isComplete: this.value }
+            })
+                .done(function () {
+                    console.log('successfully updated task');
+                })
+                .fail(function (err) {
+                    if (err) throw err;
+                });
         });
     }
 });
