@@ -9,7 +9,7 @@ let isLoggedIn = (req, res, next) => {
 
 module.exports = (app, passport) => {
     app.get('/signup', (req, res) => {
-        res.sendFile(path.join(__dirname, '../public/signup.html'));
+        res.sendFile(path.join(__dirname, '../public/register.html'));
     });
     app.get('/login', (req, res) => {
         res.sendFile(path.join(__dirname, '../public/login.html'));
