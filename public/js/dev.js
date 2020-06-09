@@ -19,7 +19,7 @@ $(document).ready(function () {
         });
     });
 
-    // When specific project button is clicked
+    // When a project button is clicked
     $('.user-projects').on(
         'click',
         'button.project-btn',
