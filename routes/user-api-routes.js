@@ -10,7 +10,20 @@ module.exports = (app) => {
             });
     });
 
-    // GET one user
+    // GET one user by Username
+    app.get('/api/username/:username', (req, res) => {
+        db.User.findOne({
+            where: {
+                username: req.params.username
+            }
+        })
+            .then((data) => res.json(data))
+            .catch((err) => {
+                if (err) throw err;
+            });
+    });
+
+    // GET one user by ID
     app.get('/api/users/:id', (req, res) => {
         db.User.findOne({
             where: {
@@ -45,13 +58,13 @@ module.exports = (app) => {
             });
     });
 
-    // PUT route for updating User
+    // PUT route for updating User by username
     app.put('/api/users', (req, res) => {
         console.log('User Update: ', req.body);
 
         db.User.update(req.body, {
             where: {
-                id: req.body.id
+                username: req.body.username
             }
         })
             .then((data) => res.json(data))

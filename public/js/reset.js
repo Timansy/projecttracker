@@ -1,0 +1,55 @@
+$(document).ready(function () {
+    var resetForm = $('form.reset');
+    var usernameInput = $('input#username-input');
+    var passwordInput = $('input#password-input');
+    var passwordConfirm = $('input#password-confirm-input');
+    var signupBtn = $('input.signup-btn');
+
+    resetForm.on('submit', handleResetSubmit);
+
+    function handleResetSubmit(event) {
+        event.preventDefault();
+
+        var userData = {
+            username: usernameInput.val().trim(),
+            password: passwordInput.val().trim(),
+            passwordConfirm: passwordConfirm.val().trim()
+        };
+
+        if (
+            !userData.username ||
+            !userData.password ||
+            !userData.passwordConfirm
+        ) {
+            return;
+        } else if (userData.password !== userData.passwordConfirm) {
+            return;
+        } else {
+            resetPassword(userData.username, userData.password);
+        }
+    }
+
+    function resetPassword(username, password) {
+        $.ajax({
+            type: 'PUT',
+            url: '/api/users',
+            data: { username: username, password: password }
+        })
+            .done(function () {
+                console.log('Password Successfully Updated');
+                window.location.replace('/');
+            })
+            .fail(function (err) {
+                if (err) throw err;
+                return;
+            });
+    }
+
+    signupBtn.on('click', handleSignupRedirect);
+
+    function handleSignupRedirect(event) {
+        event.preventDefault();
+
+        window.location.replace('/signup');
+    }
+});
