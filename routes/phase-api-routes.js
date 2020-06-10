@@ -10,8 +10,10 @@ module.exports = (app) => {
             });
     });
 
+    // GET route fo
+
     // GET route for one project phase
-    app.get('/api/project-phase/phase_id=:id', (req, res) => {
+    app.get('/api/project-phase/phase-id/:id', (req, res) => {
         db.ProjectPhase.findOne({
             where: {
                 id: req.params.id
