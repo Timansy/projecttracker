@@ -36,6 +36,20 @@ module.exports = (app) => {
             });
     });
 
+    app.get('/api/tasks/phase/:phaseId', function (req, res) {
+        db.Task.findAll({
+            where: {
+                ProjectPhaseId: req.params.phaseId
+            }
+        })
+            .then(function (data) {
+                res.json(data);
+            })
+            .catch(function (err) {
+                if (err) throw err;
+            });
+    });
+
     // GET project specific Tasks by user id and phase id -- arranges by Phase ID in ascending order
     app.get('/api/tasks/user_id=:userId/phase_id=:phaseId', (req, res) => {
         console.log(req.params);
