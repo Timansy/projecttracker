@@ -26,15 +26,41 @@ $(document).ready(function () {
         handleProjectBtnClick
     );
 
-    // Displays all projects as buttons
+    // Displays users projects as buttons
     function renderProjectBtns(userId) {
-        $.get(`/api/projects/${userId}`).then(function (data) {
-            // Loops through GET data and appends each project
-            data.forEach(function (project) {
-                $('.user-projects').append(`
-                <button class="project-btn" id="${project.id}">${project.title}</button)
-                `);
+        // GETS all tasks asscoiated with a user
+        $.get(`/api/tasks/user/${userId}`)
+            .then(function (data) {
+                let phaseIdArr = [];
+
+                // Loops through tasks and adds Phase ID to array
+                data.forEach(function (task) {
+                    phaseIdArr.push(task.ProjectPhaseId);
+                });
+
+                // Takes phase id array and creates array of only unique values
+                let uniquePhasesArr = [...new Set(phaseIdArr)];
+
+                uniquePhasesArr.forEach(function (phaseId) {
+                    $.get(`/api/project-phase/phase-id/${phaseId}`)
+                        .then(function (data) {
+                            appendProjectBtn(data.ProjectId);
+                        })
+                        .catch(function (err) {
+                            if (err) throw err;
+                        });
+                });
+            })
+            .catch(function (err) {
+                if (err) throw err;
             });
+    }
+
+    function appendProjectBtn(projectId) {
+        $.get(`/api/projects/id/${projectId}`).then(function (data) {
+            $('.user-projects').append(`
+            <button type="submit" id="${data.id}" class="project-btn">${data.title}</button>    
+            `);
         });
     }
 
@@ -46,6 +72,7 @@ $(document).ready(function () {
         let userId = $('.member-id').text();
         // 'This' represents the project button that was clicked
         let projectId = $(this).attr('id');
+        console.log(projectId);
 
         // GETS all phases associated with the selected project
         // I start here because my objective is to obtain all of the users tasks for a particular project. I need to know what phase id the task belongs to.
