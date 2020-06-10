@@ -222,18 +222,14 @@ $(document).ready(function() {
     getProjectPhases()
 
     function getProjectPhases() {
-        $.get("/api/project-phase", function(data) {
-            initializeProjectPhases(data)
-        });
+        $.get("/api/project-phase", initializeProjectPhases)
     };
 
     function initializeProjectPhases(phases) {
         phasesDeck.empty();
-        var phasesToAdd = [];
         for (let i = 0; i < phases.length; i++) {
-            phasesToAdd.push(createNewPhase(phases[i]));
+            createNewPhase(phases[i])
         }
-        phasesDeck.append(phasesToAdd)
     }
 
     function createNewPhase(phases) {
@@ -255,15 +251,14 @@ $(document).ready(function() {
                 }
                 newPhase = ` 
             <div class="phase-card card col-fluid" id="phase-card" style="width:18rem;"> 
-                <div class="card-body">
+                <div style="text-align: center; margin-top: 10px;">
                     <h3>${phases.title}</h3>
                 </div> 
                 <div class="card-body" id="task-container-${phases.id}">
                          ${taskArrayText} 
                 </div>
             </div>`;
-            phasesDeck.append(newPhase); 
-            console.log(newPhase)
+                phasesDeck.append(newPhase);
             })
     }
 

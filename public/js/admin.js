@@ -1,10 +1,10 @@
-$(document).ready(function () {
+$(document).ready(function() {
     var usedID;
 
     // This file just does a GET request to figure out which user is logged in
     // and updates the HTML on the page
 
-    $.get('/api/user_data').then(function (data) {
+    $.get('/api/user_data').then(function(data) {
         //this is where we could handle routing based upon auth_level
         $('.member-name').text(data.username);
         $('.member-id').text(data.id);
@@ -18,9 +18,9 @@ $(document).ready(function () {
         populateManagerOptions();
     });
 
-    $('.auth_selector').change(function () {
+    $('.auth_selector').change(function() {
         var val = this.value;
-        $.get('/api/user_data').then(function (data) {
+        $.get('/api/user_data').then(function(data) {
             $.post(`/api/auth_level/${data.id}/${val}`);
             $('.member-auth_level').text(val);
             window.location.replace(`/${val}`);
@@ -36,7 +36,7 @@ $(document).ready(function () {
         let managerIdInput = +$('#project-managers').val().trim();
         let adminId;
 
-        $.get('/api/user_data').then(function (data) {
+        $.get('/api/user_data').then(function(data) {
             adminId = data.id;
 
             createProject(titleInput, managerIdInput, adminId);
@@ -45,6 +45,7 @@ $(document).ready(function () {
             $('.project-cards').empty();
             renderProjects(adminId);
         });
+        $('#title-input').val("")
     }
 
     function createProject(title, projectMgrId, adminId) {
@@ -57,8 +58,8 @@ $(document).ready(function () {
     }
 
     function renderProjects(userId) {
-        $.get(`/api/projects/${userId}`).then(function (data) {
-            data.forEach(function (project) {
+        $.get(`/api/projects/${userId}`).then(function(data) {
+            data.forEach(function(project) {
                 $('.project-cards').append(`
                 <div>
                   <p>Title: ${project.title}</p>
@@ -73,7 +74,7 @@ $(document).ready(function () {
 
     // Makes all users available in Select Project Manager drop down
     function populateManagerOptions() {
-        $.get(`/api/users`).then(function (data) {
+        $.get(`/api/users`).then(function(data) {
             $('#project-managers').empty();
             data.forEach((user) => {
                 $('#project-managers').append(`
@@ -104,6 +105,9 @@ $(document).ready(function () {
             $('.password-auth').empty();
             $('.password-auth').append(`<p>Password Does Not Match</p>`);
         }
+        $('#username-input').val("");
+        $('#password-input').val("");
+        $('#confirm-input').val("");
     }
 
     // Creates new user and posts to DB from user input
