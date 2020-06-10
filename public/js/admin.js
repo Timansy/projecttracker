@@ -114,6 +114,4 @@ $(document).ready(function () {
             auth_level: authLevel
         });
     }
-
-    function appendPasswordAlert() {}
 });

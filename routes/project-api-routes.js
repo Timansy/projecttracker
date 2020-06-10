@@ -23,6 +23,19 @@ module.exports = (app) => {
             });
     });
 
+    // GET one project by project ID
+    app.get('/api/projects/id/:id', (req, res) => {
+        db.Project.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
+            .then((data) => res.json(data))
+            .catch((err) => {
+                if (err) throw err;
+            });
+    });
+
     // POST route for new project
     app.post('/api/projects', (req, res) => {
         db.Project.create(req.body)

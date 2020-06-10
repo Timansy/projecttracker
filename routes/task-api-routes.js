@@ -23,6 +23,20 @@ module.exports = (app) => {
             });
     });
 
+
+    // GET tasks by user...
+    app.get('/api/tasks/user/:id', (req, res) => {
+        db.Task.findAll({
+            where: {
+                UserId: req.params.id
+            }
+        })
+            .then((data) => res.json(data))
+            .catch((err) => {
+              if (err) throw err;
+        });
+    });
+
     app.get('/api/tasks/phase/:phaseId', function(req, res) {
         db.Task.findAll({
                 where: {
@@ -33,6 +47,7 @@ module.exports = (app) => {
                 res.json(data);
             })
             .catch(function(err) {
+
                 if (err) throw err;
             });
     });
