@@ -26,9 +26,11 @@ $(document).ready(function () {
         handleProjectBtnClick
     );
 
-    // Displays users projects as buttons
     function renderProjectBtns(userId) {
-        // GETS all tasks asscoiated with a user
+        //To obtain a Project Id associated with a Dev I must:
+        // 1. Get all Tasks assigned to a Dev so I can obtain Phase Id
+        // 2. Use Phase Id to obtain Project Id
+        // 3. Use Project Id to obtain Project data to render
         $.get(`/api/tasks/user/${userId}`)
             .then(function (data) {
                 let phaseIdArr = [];
@@ -41,6 +43,9 @@ $(document).ready(function () {
                 // Takes phase id array and creates array of only unique values
                 let uniquePhasesArr = [...new Set(phaseIdArr)];
 
+                // Loops through array of unique Phase Id's and makes a call for that Phase's data, so I can obtain a Project ID. This is how I can obtain a user's list of Projects they are associated with -- But this creates duplicate Project Id's because a Project can have multiple phases
+                // I think because of the loop, I cannot push ID to an array properly.
+
                 uniquePhasesArr.forEach(function (phaseId) {
                     $.get(`/api/project-phase/phase-id/${phaseId}`)
                         .then(function (data) {
@@ -51,6 +56,7 @@ $(document).ready(function () {
                         });
                 });
             })
+
             .catch(function (err) {
                 if (err) throw err;
             });
@@ -59,7 +65,7 @@ $(document).ready(function () {
     function appendProjectBtn(projectId) {
         $.get(`/api/projects/id/${projectId}`).then(function (data) {
             $('.user-projects').append(`
-            <button type="submit" id="${data.id}" class="project-btn">${data.title}</button>    
+            <button type="submit" id="${data.id}" class="project-btn">${data.title}</button>
             `);
         });
     }
