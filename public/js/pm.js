@@ -25,6 +25,7 @@ $(document).ready(function() {
     var userId;
 
 
+
     // This file just does a GET request to figure out which user is logged in
     // and updates the HTML on the page
     $.get("/api/user_data").then(function(data) {
@@ -122,12 +123,13 @@ $(document).ready(function() {
                 UserId: $("#assigneeId").val()
             });
         taskTitleInput.val("")
+        getProjectPhases();
     }
 
     //POST THE NEW TASK ITEM IN THE DB
     function createTask(taskData) {
         $.post('/api/tasks', taskData).then(
-            getPhaseTasks
+            // getPhaseTasks()
         );
     };
 
@@ -260,7 +262,8 @@ $(document).ready(function() {
                          ${taskArrayText} 
                 </div>
             </div>`;
-                console.log(newPhase)
+            phasesDeck.append(newPhase); 
+            console.log(newPhase)
             })
     }
 
