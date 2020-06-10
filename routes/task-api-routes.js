@@ -13,12 +13,26 @@ module.exports = (app) => {
     // GET route for one task
     app.get('/api/tasks/:id', (req, res) => {
         db.Task.findOne({
-            where: {
-                id: req.params.id
-            }
-        })
+                where: {
+                    id: req.params.id
+                }
+            })
             .then((data) => res.json(data))
             .catch((err) => {
+                if (err) throw err;
+            });
+    });
+
+    app.get('/api/tasks/phase/:phaseId', function(req, res) {
+        db.Task.findAll({
+                where: {
+                    ProjectPhaseId: req.params.phaseId
+                }
+            })
+            .then(function(data) {
+                res.json(data);
+            })
+            .catch(function(err) {
                 if (err) throw err;
             });
     });
@@ -27,11 +41,11 @@ module.exports = (app) => {
     app.get('/api/tasks/user_id=:userId/phase_id=:phaseId', (req, res) => {
         console.log(req.params);
         db.Task.findAll({
-            where: {
-                UserId: req.params.userId,
-                ProjectPhaseId: req.params.phaseId
-            }
-        })
+                where: {
+                    UserId: req.params.userId,
+                    ProjectPhaseId: req.params.phaseId
+                }
+            })
             .then((data) => {
                 res.json(data);
             })
@@ -52,10 +66,10 @@ module.exports = (app) => {
     // DELETE route for one task
     app.delete('/api/tasks/:id', (req, res) => {
         db.Task.destroy({
-            where: {
-                id: req.params.id
-            }
-        })
+                where: {
+                    id: req.params.id
+                }
+            })
             .then((data) => res.json(data))
             .catch((err) => {
                 if (err) throw err;
@@ -67,10 +81,10 @@ module.exports = (app) => {
         console.log('Task Update: ', req.body);
 
         db.Task.update(req.body, {
-            where: {
-                id: req.body.id
-            }
-        })
+                where: {
+                    id: req.body.id
+                }
+            })
             .then((data) => res.json(data))
             .catch((err) => {
                 if (err) throw err;

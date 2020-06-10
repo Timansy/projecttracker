@@ -69,7 +69,6 @@ $(document).ready(function() {
 
     // POSTS THE NEW PHASE OBJECT IN THE DB
     function createPhase(phaseData) {
-        console.log(phaseData);
         $.post('/api/project-phase', phaseData).then(
             getProjectPhases
         );
@@ -91,8 +90,6 @@ $(document).ready(function() {
             rowsToAdd.push(createProjectRow(data[i]));
         }
         phaseProjectId.empty();
-        console.log(rowsToAdd);
-        console.log(phaseProjectId);
         phaseProjectId.append(rowsToAdd);
         phaseProjectId.val(projectId);
     }
@@ -129,7 +126,6 @@ $(document).ready(function() {
 
     //POST THE NEW TASK ITEM IN THE DB
     function createTask(taskData) {
-        console.log(taskData);
         $.post('/api/tasks', taskData).then(
             getPhaseTasks
         );
@@ -150,8 +146,6 @@ $(document).ready(function() {
             rowsToAdd.push(createPhaseRow(data[i]));
         }
         taskPhaseId.empty();
-        console.log(rowsToAdd);
-        console.log(taskPhaseId);
         taskPhaseId.append(rowsToAdd);
         taskPhaseId.val(phaseId);
     }
@@ -179,13 +173,11 @@ $(document).ready(function() {
             rowsToAdd.push(createAssigneeRow(data[i]));
         }
         taskAssigneeId.empty();
-        console.log(rowsToAdd);
-        console.log(taskAssigneeId);
         taskAssigneeId.append(rowsToAdd);
         taskAssigneeId.val(assigneeId);
     }
 
-    // Creates the author options in the dropdown
+
     function createAssigneeRow(assignee) {
         var listOption = $("<option>");
         listOption.attr("value", assignee.id);
@@ -243,58 +235,83 @@ $(document).ready(function() {
     }
 
     function createNewPhase(phases) {
-        var newPhase = `
-        <div class="phase-card card col-fluid" id="phase-card" style="width: 18rem;">
-        <div class="card-body">
-            <h3>${phases.title}</h3>
-        </div>
-        <div class="card-body" value="${phases.id}" id="task-container">
-        </div>
-        </div>`;
 
-        return newPhase
+        $.get("/api/tasks/phase/" + phases.id, function(res, req) {})
+            .then(function(res2) {
+                var taskArrayText = ""
+                for (let i = 0; i < res2.length; i++) {
+                    taskArrayText += `
+                 <div class="card task-card" value="${res2[i].ProjectPhaseId} style="width:auto">
+                    <div class="card-body">
+                            <h5>${res2[i].taskname}</h5>
+                            <ul>
+                                <li>${res2[i].UserId}</li>
+                                <li>${res2[i].isComplete}</li>
+                            </ul>
+                     </div>
+                 </div>`;
+                }
+                newPhase = ` 
+            <div class="phase-card card col-fluid" id="phase-card" style="width:18rem;"> 
+                <div class="card-body">
+                    <h3>${phases.title}</h3>
+                </div> 
+                <div class="card-body" id="task-container-${phases.id}">
+                         ${taskArrayText} 
+                </div>
+            </div>`;
+                console.log(newPhase)
+            })
     }
 
     // ------------------------------------------------------------------------------------------//
     // TASK POPULATION FOR PHASES //
 
-    getPhaseTasks()
+    // getPhaseTasks()
 
-    function getPhaseTasks() {
-        $.get("/api/tasks", function(tasks) {
-            $.get("/api/project-phase", function(phases) {
-                initializePhaseTasks(tasks, phases)
-            })
-        })
-    }
 
-    function initializePhaseTasks(tasks, phases) {
-        var taskContainers = document.querySelectorAll("#task-container");
+    // function getPhaseTasks() {
+    //     $.get("/api/tasks", function(tasks) {
+    //         $.get("/api/project-phase", function(phases) {
+    //             initializePhaseTasks(tasks, phases)
+    //         })
+    //     })
+    // }
+    // var tasksArray = []
 
-        var phasesToAdd = []
-        for (let i = 0; i < tasks.length; i++) {
-            if (tasks.ProjectPhaseId == phases.id) {
-                phasesToAdd.push(createNewTask(tasks[i]))
-            }
-        }
-        console.log(phasesToAdd)
+    // function initializePhaseTasks(tasks, phases) {
+    //     console.log(phases, tasks)
+    //     for (let i = 0; i < phases.length; i++) {
+    //         console.log(phases[i].id);
 
-    }
+    //     }
+    //     for (let i = 0; i < tasks.length; i++) {
+    //         console.log(tasks[i].ProjectPhaseId);
 
-    function createNewTask(tasks) {
-        var newTask = `
-        <div class="card task-card" value="${tasks.ProjectPhaseId} style="width:auto">
-        <div class="card-body">
-            <h5>${tasks.taskname}</h5>
-        </div>
-    </div>`;
-        // <ul>
-        //     <li>Andrew Reeves</li>
-        //     <li>Working</li>
-        // </ul>
+    //     }
+    // var taskContainers = document.querySelector("#task-container");
+    // console.log(taskContainers)
+    // var tasksToAdd = []
+    // for (let i = 0; i < tasks.length; i++) {
+    //     tasksToAdd.push(createNewTask(tasks[i]))
+    // }
+    // taskContainers.append(tasksToAdd)
+    // }
 
-        return newTask
-    }
+    // function createNewTask(tasks) {
+    //     var newTask = `
+    //     <div class="card task-card" value="${tasks.ProjectPhaseId} style="width:auto">
+    //     <div class="card-body">
+    //         <h5>${tasks.taskname}</h5>
+    //     </div>
+    // </div>`;
+    //     // <ul>
+    //     //     <li>Andrew Reeves</li>
+    //     //     <li>Working</li>
+    //     // </ul>
+
+    //     return newTask
+    // }
 
     // ----------------------------------------------------------------------------//
     // ADDITIONAL FUNCTIONALITY //
