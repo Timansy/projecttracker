@@ -40,7 +40,9 @@ $(document).ready(function() {
 
                 // Renders the Admin's projects with the newly created project
                 $('.project-cards').empty();
-                renderProjects(adminId);
+                return adminId
+            }).then((adminId) => {
+                renderProjects(adminId)
             })
             .catch(function(err) {
                 // Here's where we can handle a username typo...
