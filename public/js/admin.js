@@ -43,8 +43,10 @@ $(document).ready(function() {
 
             // Empty's projects div and renders with new project added
             $('.project-cards').empty();
-            renderProjects(adminId);
-        });
+            return adminId
+        }).then(function(adminId) {
+            renderProjects(adminId)
+        })
         $('#title-input').val("")
     }
 
@@ -59,12 +61,15 @@ $(document).ready(function() {
 
     function renderProjects(userId) {
         $.get(`/api/projects/${userId}`).then(function(data) {
+            console.log(data)
             data.forEach(function(project) {
                 $('.project-cards').append(`
-                <div>
+                <div class="col card">
+                <div class="card-body">
                   <p>Title: ${project.title}</p>
                   <p>Project Manager ID: ${project.projectMgrIdId}</p>
                   <p>Complete: ${project.complete}</p>
+                  </div>
                 </div>
                 <br>
                 `);
