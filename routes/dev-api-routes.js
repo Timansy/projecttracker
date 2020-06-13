@@ -17,8 +17,6 @@ module.exports = (app) => {
                     ]
                 }
             ]
-        }).then((data) => {
-            res.json(data);
-        });
+        }).then((data) => res.json(data));
     });
 };

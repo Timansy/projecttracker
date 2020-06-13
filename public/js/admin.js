@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var usedID;
+    var adminId;
 
     // This file just does a GET request to figure out which user is logged in
     // and updates the HTML on the page
@@ -10,12 +10,10 @@ $(document).ready(function() {
         $('.member-id').text(data.id);
         $('.member-auth_level').text(`administrator`);
         // window.location.replace(`/${data.auth_level}`);
-        usedID = data.id;
+        adminId = data.id;
 
         // Renders Admin's current projects
-        renderProjects(usedID);
-
-        populateManagerOptions();
+        renderProjects(adminId);
     });
 
     $('.auth_selector').change(function() {
@@ -33,21 +31,28 @@ $(document).ready(function() {
         event.preventDefault();
 
         let titleInput = $('#title-input').val().trim();
-        let managerIdInput = +$('#project-managers').val().trim();
-        let adminId;
+        let mgrUsernameInput = $('#pm-input').val().trim();
+        // let adminId = $('.member-id').text();
 
-        $.get('/api/user_data').then(function(data) {
-            adminId = data.id;
+        $.get(`/api/username/${mgrUsernameInput}`)
+            .then(function(data) {
+                createProject(titleInput, data.id, adminId);
 
-            createProject(titleInput, managerIdInput, adminId);
+                // Renders the Admin's projects with the newly created project
+                $('.project-cards').empty();
+                renderProjects(adminId);
+            })
+            .catch(function(err) {
+                // Here's where we can handle a username typo...
+                if (err) {
+                    $('#manager-input-err').append(`
+                    <p>Username does not exist</p>
+                    `);
+                }
+            });
 
-            // Empty's projects div and renders with new project added
-            $('.project-cards').empty();
-            return adminId
-        }).then(function(adminId) {
-            renderProjects(adminId)
-        })
-        $('#title-input').val("")
+        $('#title-input').val('');
+        $('#pm-input').val('');
     }
 
     function createProject(title, projectMgrId, adminId) {
@@ -56,35 +61,24 @@ $(document).ready(function() {
             complete: false,
             projectMgrIdId: projectMgrId,
             UserId: adminId
+        }).done(function(msg) {
+            console.log(`${msg.title} has been created!`);
         });
     }
 
     function renderProjects(userId) {
         $.get(`/api/projects/${userId}`).then(function(data) {
-            console.log(data)
             data.forEach(function(project) {
                 $('.project-cards').append(`
                 <div class="col card">
                 <div class="card-body">
                   <p>Title: ${project.title}</p>
-                  <p>Project Manager ID: ${project.projectMgrIdId}</p>
+                  <p id="pm-name">Project Manager Id: ${project.projectMgrIdId}</p>
                   <p>Complete: ${project.complete}</p>
                   </div>
                 </div>
                 <br>
                 `);
-            });
-        });
-    }
-
-    // Makes all users available in Select Project Manager drop down
-    function populateManagerOptions() {
-        $.get(`/api/users`).then(function(data) {
-            $('#project-managers').empty();
-            data.forEach((user) => {
-                $('#project-managers').append(`
-                  <option value="${user.id}">${user.username}</option>
-           `);
             });
         });
     }
@@ -101,18 +95,14 @@ $(document).ready(function() {
         let roleInput = $('#roles').val().trim();
 
         if (passwordInput === confirmInput) {
-            console.log(usernameInput, passwordInput, roleInput);
-
             createUser(usernameInput, passwordInput, roleInput);
-
-            populateManagerOptions();
         } else {
             $('.password-auth').empty();
             $('.password-auth').append(`<p>Password Does Not Match</p>`);
         }
-        $('#username-input').val("");
-        $('#password-input').val("");
-        $('#confirm-input').val("");
+        $('#username-input').val('');
+        $('#password-input').val('');
+        $('#confirm-input').val('');
     }
 
     // Creates new user and posts to DB from user input

@@ -66,71 +66,87 @@ $(document).ready(function() {
         $('.tasks-deck').toggleClass('d-none')
 
         let userId = $('.member-id').text();
-        // 'This' represents the project button that was clicked
-        let projectId = $(this).attr('id');
 
-        // GETS all phases associated with the selected project
-        // I start here because my objective is to obtain all of the users tasks for a particular project. I need to know what phase id the task belongs to.
-        $.get(`/api/project-phase/project_id=${projectId}`).then(function(
-            phaseData
-        ) {
-            // Render projects with user id and all phase data
-            renderProjectTasks(userId, phaseData);
-        });
-    }
+        // Setting projectId to the clicked button's id value and also converting to integer using Unary plus(+) operator
+        let projectId = +$(this).attr('id');
+        let userTasksArr = [];
 
-    function renderProjectTasks(userId, phaseData) {
-        // Loops through Phase data and gets every task assigned to the user for a specific phase -- Appends only tasks associated with the specific project
-        phaseData.forEach(function(phase) {
-            $.get(`/api/tasks/user_id=${userId}/phase_id=${phase.id}`).then(
-                function(data) {
-                    appendTasks(data);
+        // Getting all task data by user
+        $.get(`/api/task-data/user/${userId}`).then(function(data) {
+            // Loop through query data and add objects, with a project id that matches this buttons id, to the user tasks array -- will create an array of objects that contains this users tasks by project
+            data.forEach(function(task) {
+                if (task.ProjectPhase.ProjectId === projectId) {
+                    userTasksArr.push(task);
                 }
-            );
+            });
+
+            // Calling our append function with this users id and tasks associated with the project selected
+            appendTasks(userTasksArr);
         });
     }
 
-    function appendTasks(taskData) {
-        taskData.forEach(function(task) {
-            // Appends all Tasks that have not been completed
-            if (!task.isComplete) {
-                $('.tasks-deck').append(`
-                    <div class="card task-card" style="width: 18rem;">
-                      <div class="card-body">
-                        <h3>${task.taskname}</h3>
-                        <ul>
-                            <li>
-                                <h5>Phase Id: ${task.ProjectPhaseId}</h5>
-                            <li>
-                                <h5>Status:</h5>
-                                <div class="status-dropdown">
-                                    <select 
-                                      class="status_selector"
-                                      name="isComplete"
-                                      id="${task.id}"
-                                    >
-                                    <option
-                                    value="false">In progress</option>
-                                    <option
-                                    value="true">Complete</option>
-                                </div>
-                            </li>
-                        </ul>
-                      </div>
-                    </div>
-        `);
+    function appendTasks(array) {
+        // Creating variables to be used in status selector of tasks
+        var oppositeVal;
+        var statusText;
+        var oppositeStatusText;
+
+        // Looping through the array and appending tasks...
+        array.forEach(function(task) {
+            // Setting the variables values based on task status
+            if (task.isComplete === true) {
+                oppositeVal = false;
+            } else oppositeVal = true;
+
+            if (task.isComplete === true) {
+                statusText = 'Complete';
+                oppositeStatusText = 'In Progress';
+            } else {
+                statusText = 'In Progress';
+                oppositeStatusText = 'Complete';
             }
+
+            $('.tasks-deck').append(`
+            <div class="card task-card" style="width: 18rem;">
+                <div class="card-body">
+                    <h3>${task.taskname}</h3>
+                    <ul>
+                        <li>
+                            <h5>${task.ProjectPhase.title}</h5>
+                         </li>
+                         <li>
+                        <h5>Status:</h5>
+                            <div class="status-dropdown">
+                                <select
+                                class="status_selector"
+                                name="isComplete"
+                                id="${task.id}"
+                                >
+                                    <option value="${task.isComplete}" selected>${statusText}</option>
+                                    <option value="${oppositeVal}">${oppositeStatusText}</option>
+                            </div>
+                        </li>
+                    </ul>
+                 </div>
+            </div>
+            `);
         });
 
-        // Allows the Dev to change the status of their task and will update the DB when a change is made
+        handleTaskStatusChange();
+    }
+
+    // Updates task status
+    function handleTaskStatusChange() {
         $('.status_selector').change(function() {
+            console.log(this.id, this.value);
+
             $.ajax({
                     type: 'PUT',
                     url: '/api/tasks',
                     data: { id: this.id, isComplete: this.value }
                 })
                 .done(function() {
-                    console.log('successfully updated task');
+                    console.log('Task successfully updated');
                 })
                 .fail(function(err) {
                     if (err) throw err;
