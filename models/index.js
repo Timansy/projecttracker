@@ -11,7 +11,7 @@ const db = {};
 let sequelize;
 if (process.env.JAWSDB_URL) {
   console.log("aaa");
-  sequelize = new Sequelize(process.env.JAWSDB_URL, config);
+  sequelize = new Sequelize(process.env.JAWSDB_URL, {});
 } else {
   console.log("bbb");
   sequelize = new Sequelize(config.database, config.username, config.password, config);
