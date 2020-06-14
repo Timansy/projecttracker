@@ -74,6 +74,9 @@ $(document).ready(function () {
     // thisAndThat()
 
     function displayProjectPhases(projectId, data) {
+        // Populates phase options for Add Task when phases are displayed
+        getPhases(projectId);
+
         console.log(data);
         phaseArray = [];
         projectPhases = data;
