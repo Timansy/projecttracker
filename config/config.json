@@ -1,17 +1,17 @@
 {
     "development": {
         "username": "root",
-        "password": "charchar",
+        "password": "root",
         "database": "planning_board",
         "host": "127.0.0.1",
         "dialect": "mysql",
         "operatorsAliases": "0"
     },
-    "test": {
-        "username": "root",
-        "password": null,
-        "database": "database_test",
-        "host": "127.0.0.1",
+    "JAWSDB_URL": {
+        "username": "k9nt1b7cgcazlum4",
+        "password": "m6dyghwudq08h9bl",
+        "database": "f17xadxke7bo40g5",
+        "host": "op2hpcwcbxb1t4z9.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
         "dialect": "mysql",
         "operatorsAliases": "0"
     },
