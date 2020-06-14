@@ -6,7 +6,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start2": "mysql -u root -p <./db/schema.sql",
-        "watch": "nodemon server.js"
+        "watch": "nodemon server.js",
+        "start": "node server.js"
     },
     "keywords": [],
     "author": "",
