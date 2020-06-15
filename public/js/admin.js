@@ -74,6 +74,7 @@ $(document).ready(function() {
                 $('.project-cards').append(`
                 <div class="col card">
                 <div class="card-body">
+                <button class="project-delete btn btn-danger" id="project-delete" style="float:right; margin: 5px;" data-id="${project.id}">X</button>
                   <p>Title: ${project.title}</p>
                   <p id="pm-name">Project Manager Id: ${project.projectMgrIdId}</p>
                   <p>Complete: ${project.complete}</p>
@@ -115,4 +116,17 @@ $(document).ready(function() {
             auth_level: authLevel
         });
     }
+
+    //<-------------------------------------------------------------------------------------------->//
+    // PROJECT DELETE //
+    $(document).on("click", "#project-delete", function() {
+        let projectId = $(this).attr("data-id")
+        $.ajax({
+            method: "DELETE",
+            url: "/api/projects/" + projectId
+        }).then(() => {
+            $('.project-cards').empty();
+            renderProjects(adminId)
+        })
+    })
 });

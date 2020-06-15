@@ -63,7 +63,7 @@ $(document).ready(function() {
         $('.tasks-deck').empty();
 
         // GOTTA PRESS TWICE BUT COLLAPSES PROJECTS AFTER THAT, MAKES THE API CALL EVERYTIME THO, MAKE A SEPERATE FUNCTION?
-        $('.tasks-deck').toggleClass('d-none')
+        // $('.tasks-deck').toggleClass('d-none')
 
         let userId = $('.member-id').text();
 

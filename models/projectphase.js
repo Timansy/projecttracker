@@ -15,9 +15,8 @@ module.exports = function(sequelize, DataTypes) {
 
     ProjectPhase.associate = (models) => {
         ProjectPhase.belongsTo(models.Project, {
-            foreignKey: {
-                allowNull: false,
-            },
+            foreignKeyConstraint: true,
+            onDelete: "CASCADE"
         });
     };
 
