@@ -119,7 +119,9 @@ $(document).ready(function() {
 
     //<-------------------------------------------------------------------------------------------->//
     // PROJECT DELETE //
-    $(document).on("click", "#project-delete", function() {
+    $(document).on("click", "#project-delete", handleProjectDelete)
+
+    function handleProjectDelete() {
         let projectId = $(this).attr("data-id")
         $.ajax({
             method: "DELETE",
@@ -128,5 +130,5 @@ $(document).ready(function() {
             $('.project-cards').empty();
             renderProjects(adminId)
         })
-    })
+    }
 });
