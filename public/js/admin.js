@@ -1,5 +1,7 @@
+var adminId;
+
 $(document).ready(function () {
-    var adminId;
+    
 
     // GET request to figure out which user is logged in; Updates the HTML on the page
     $.get('/api/user_data').then(function(data) {
@@ -76,6 +78,7 @@ $(document).ready(function () {
             $('#new-proj-alert').text(`${msg.title} successfully created`);
             $('#new-proj-alert').fadeIn(500);
             $('#new-proj-alert').fadeOut(500);
+            renderProjects(adminId);
         });
     }
 

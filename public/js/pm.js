@@ -63,6 +63,7 @@ $(document).ready(function() {
 
     function displayUserProjectsNav(data) {
         if (data.length > 0) {
+            $('#active-project').empty().append(`<h5>${data[0].title}</h5>`);
             fetchArray('projectPhases', data[0].id);
         }
         userProjects = data;
@@ -70,11 +71,15 @@ $(document).ready(function() {
 
         userProjects.forEach((project) => {
             projectNavContainer.append(`
-            <a class=" project-nav-link" href="#" id="${project.id}" >${project.title}</a> | 
+            <a class=" project-nav-link" href="#" id="${project.id}-${project.title}" >${project.title}</a> | 
         `);
         });
+
         $('.project-nav-link').click(function() {
-            loadProject(this.id);
+            let idstring = this.id
+            let id = idstring.split("-");
+            loadProject(id[0]);
+            $('#active-project').empty().append(`<h5>${id[1]}</h5>`);
         });
     }
 
