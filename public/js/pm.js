@@ -296,13 +296,13 @@ $(document).ready(function() {
 
     // <-------------------------------------------------------------------------> //
     // PHASE DELETE //
-    $(document).on("click", "#phase-delete", function() {
-        let phaseId = $(this).attr("data-id")
-        $.ajax({
-            method: "DELETE",
-            url: "/api/project-phase/" + phaseId
-        }).then(() => { loadProject(currentProjectId) })
-    })
+    // $(document).on("click", "#phase-delete", function() {
+    //     let phaseId = $(this).attr("data-id")
+    //     $.ajax({
+    //         method: "DELETE",
+    //         url: "/api/project-phase/" + phaseId
+    //     }).then(() => { loadProject(currentProjectId) })
+    // })
 
     // <-------------------------------------------------------------------------> //
     // TASK DELETE //
