@@ -10,13 +10,12 @@ module.exports = function(sequelize, DataTypes) {
 
 
     ProjectPhase.associate = (models) => {
-        ProjectPhase.hasMany(models.Task);
+        ProjectPhase.hasMany(models.Task, { onDelete: 'cascade' });
     };
 
     ProjectPhase.associate = (models) => {
         ProjectPhase.belongsTo(models.Project, {
-            foreignKeyConstraint: true,
-            onDelete: "CASCADE"
+            foreignKeyConstraint: true
         });
     };
 
