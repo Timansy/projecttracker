@@ -67,9 +67,20 @@
                     <label for="title">Project Title:</label>
                     <input id="title-input" type="text" name="title" /><br />
                     <label for="pm-username">Project Manager Username:</label>
-                    <input id="pm-input" type="text" name="pm-username" /><span
-                        id="manager-input-err"
-                    ></span>
+                    <input id="pm-input" type="text" name="pm-username" />
+                    <div
+                        style="display: none;"
+                        id="new-proj-alert"
+                        class="alert alert-danger"
+                        role="alert"
+                    >
+                        <span
+                            class="glyphicon glyphicon-exclamation-sign"
+                            aria-hidden="true"
+                        ></span>
+                        <span class="sr-only"></span>
+                        <span class="msg"></span>
+                    </div>
                     <br />
                     <button class="new-project-btn" type="submit">
                         Create Project
@@ -104,7 +115,19 @@
                         <option value="project_manager">Project Manager</option>
                         <option value="developer">Developer</option>
                     </select>
-
+                    <div
+                        style="display: none;"
+                        id="new-user-alert"
+                        class="alert alert-danger"
+                        role="alert"
+                    >
+                        <span
+                            class="glyphicon glyphicon-exclamation-sign"
+                            aria-hidden="true"
+                        ></span>
+                        <span class="sr-only"></span>
+                        <span class="msg"></span>
+                    </div>
                     <br />
                     <button class="new-user-btn" type="submit">
                         Create User

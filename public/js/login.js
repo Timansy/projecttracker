@@ -35,7 +35,10 @@ $(document).ready(function () {
                 window.location.replace('/in');
             })
             .catch(function (err) {
-                console.log(err);
+                if (err) {
+                    $('div#alert').text('Invalid Username or Password');
+                    $('#alert').fadeIn(500);
+                }
             });
     }
 
