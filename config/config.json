@@ -1,16 +1,8 @@
 {
     "development": {
         "username": "root",
-        "password": "charchar",
+        "password": "root",
         "database": "planning_board",
-        "host": "127.0.0.1",
-        "dialect": "mysql",
-        "operatorsAliases": "0"
-    },
-    "test": {
-        "username": "root",
-        "password": null,
-        "database": "database_test",
         "host": "127.0.0.1",
         "dialect": "mysql",
         "operatorsAliases": "0"
