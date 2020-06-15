@@ -1,6 +1,6 @@
 var currentProjectId;
 
-$(document).ready(function () {
+$(document).ready(function() {
     let userProjects = [];
     let projectPhases = [];
 
@@ -16,14 +16,14 @@ $(document).ready(function () {
 
     let addTaskBtn = $('#addTaskBtn');
     let taskSubmit = $('#taskSubmit');
-    let taskDelete = $('#task-delete');
     let taskTitleInput = $('#task-title');
     let taskPhaseId = $('#phaseId');
     let taskAssigneeId = $('#assigneeId');
 
     // This file just does a GET request to figure out which user is logged in
     // and updates the HTML on the page
-    $.get('/api/user_data').then(function (data) {
+
+    $.get('/api/user_data').then(function(data) {
         //this is where we could handle routing based upon auth_level
         $('.member-name').text(data.username);
         $('.member-id').text(data.id);
@@ -34,11 +34,11 @@ $(document).ready(function () {
         getProjects(data.id);
         // userId = data.id;
         // window.location.replace(`/${data.auth_level}`);
-    });
+    })
 
-    $('.auth_selector').change(function () {
+    $('.auth_selector').change(function() {
         var val = this.value;
-        $.get('/api/user_data').then(function (data) {
+        $.get('/api/user_data').then(function(data) {
             $.post(`/api/auth_level/${data.id}/${val}`);
             // $(".member-auth_level").text(val);
             window.location.replace(`/${val}`);
@@ -61,7 +61,7 @@ $(document).ready(function () {
             <a class=" project-nav-link" href="#" id="${project.id}" >${project.title}</a> | 
         `);
         });
-        $('.project-nav-link').click(function () {
+        $('.project-nav-link').click(function() {
             loadProject(this.id);
         });
     }
@@ -92,7 +92,7 @@ $(document).ready(function () {
                            <div class="card task-card" style="width:auto">
 
                           <div class="card-body">
-                          <button class="btn-sm btn-danger" id="task-delete"
+                          <button class="btn-sm btn-danger task-delete" id="task-delete"
                           style="float:right; margin: 5px;" data-id="${res.Tasks[i].id}">X</button>       
                           <h5>${res.Tasks[i].taskname}</h5>
                                   <ul>
@@ -105,7 +105,7 @@ $(document).ready(function () {
                     phaseArray.push(`<!--${phase.id}-->
                 <div class="phase-card card col-fluid" id="phase-card" style="width:18rem;"> 
                     <div style="text-align: center; margin-top: 10px;">
-                    <button class="phase-delete btn btn-danger" style="float:right; margin: 5px;">X</button>
+                    <button class="phase-delete btn btn-danger" id="phase-delete" style="float:right; margin: 5px;" data-id="${phase.id}">X</button>
                         <h3>${phase.title}</h3>
 
                     </div> 
@@ -259,11 +259,11 @@ $(document).ready(function () {
             ();
     }
 
-    $(addProjectBtn).on('click', function () {
+    $(addProjectBtn).on('click', function() {
         $('#projectCollapse.collapse').toggleClass('show');
     });
 
-    $(addPhaseBtn).on('click', function () {
+    $(addPhaseBtn).on('click', function() {
         // getProjects();
         $('#phaseCollapse.collapse').toggleClass('show');
     });
@@ -289,15 +289,29 @@ $(document).ready(function () {
         return listOption;
     }
 
-    $(addTaskBtn).on('click', function () {
+    $(addTaskBtn).on('click', function() {
         getAssignees();
         $('#taskCollapse.collapse').toggleClass('show');
     });
 
     // <-------------------------------------------------------------------------> //
-    // TASK DELETE //
+    // PHASE DELETE //
+    $(document).on("click", "#phase-delete", function() {
+        let phaseId = $(this).attr("data-id")
+        $.ajax({
+            method: "DELETE",
+            url: "/api/project-phase/" + phaseId
+        }).then(() => { loadProject(currentProjectId) })
+    })
 
-    $(taskDelete).on('click', function () {
-        console.log('button click');
-    });
+    // <-------------------------------------------------------------------------> //
+    // TASK DELETE //
+    $(document).on("click", "#task-delete", function() {
+        let taskId = $(this).attr("data-id")
+        $.ajax({
+            method: "DELETE",
+            url: "/api/tasks/" + taskId
+        }).then(() => { loadProject(currentProjectId) })
+    })
+
 });
