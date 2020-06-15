@@ -36,7 +36,7 @@ $(document).ready(function () {
     function resetPassword(username, password) {
         $.ajax({
             type: 'PUT',
-            url: '/api/users',
+            url: '/api/user-password',
             data: { username: username, password: password }
         })
             .done(function () {
