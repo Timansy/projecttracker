@@ -1,4 +1,5 @@
 const db = require('../models');
+const bcrypt = require('bcryptjs');
 
 module.exports = (app) => {
     // GET all users
@@ -58,18 +59,32 @@ module.exports = (app) => {
             });
     });
 
-    // PUT route for updating User by username
-    app.put('/api/users', (req, res) => {
-        console.log('User Update: ', req.body);
+    // PUT route for updating a users password by username
+    app.put('/api/user-password', (req, res) => {
+        let newPasswordInput = req.body.password;
 
-        db.User.update(req.body, {
-            where: {
-                username: req.body.username
+        // Hashes new password
+        let hashedPassword = bcrypt.hashSync(
+            newPasswordInput,
+            bcrypt.genSaltSync(10),
+            null
+        );
+
+        db.User.update(
+            { password: hashedPassword },
+            {
+                where: {
+                    username: req.body.username
+                }
             }
-        })
-            .then((data) => res.json(data))
+        )
+            .then((data) => {
+                res.json(data);
+            })
             .catch((err) => {
-                if (err) throw err;
+                if (err) {
+                    res.status(401).json(err);
+                }
             });
     });
 };
