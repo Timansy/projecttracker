@@ -7,8 +7,6 @@ $(document).ready(function() {
     projectNavContainer = $('#project-nav-container');
     projectDisplayArea = $('.phases-deck');
 
-    let addProjectBtn = $('#addProjectBtn');
-
     let addPhaseBtn = $('#addPhaseBtn');
     let phaseSubmit = $('#phaseSubmit');
     let phaseTitleInput = $('#phase-title');
@@ -20,11 +18,10 @@ $(document).ready(function() {
     let taskPhaseId = $('#phaseId');
     let taskAssigneeId = $('#assigneeId');
 
-    // This file just does a GET request to figure out which user is logged in
-    // and updates the HTML on the page
+    // GET request to figure out which user is logged in; Updates the HTML on the page
 
     $.get('/api/user_data').then(function(data) {
-        //this is where we could handle routing based upon auth_level
+        // Handles routing based upon auth_level
         $('.member-name').text(data.username);
         $('.member-id').text(data.id);
         $('.member-auth_level').text(`project_manager`);
@@ -32,19 +29,34 @@ $(document).ready(function() {
 
         // Populates Project options for Add Phase
         getProjects(data.id);
-        // userId = data.id;
-        // window.location.replace(`/${data.auth_level}`);
     })
 
     $('.auth_selector').change(function() {
         var val = this.value;
         $.get('/api/user_data').then(function(data) {
             $.post(`/api/auth_level/${data.id}/${val}`);
-            // $(".member-auth_level").text(val);
             window.location.replace(`/${val}`);
         });
     });
 
+    // <----------------------------------------------------------------------->//
+    // CLICK EVENTS //
+    $(phaseSubmit).on('click', handleNewPhase);
+    $(taskSubmit).on('click', handleNewTask);
+    $(document).on("click", "#phase-delete", handlePhaseDelete)
+    $(document).on("click", "#task-delete", handleTaskDelete)
+
+    $(addPhaseBtn).on('click', function() {
+        $('#phaseCollapse.collapse').toggleClass('show');
+    });
+
+    $(addTaskBtn).on('click', function() {
+        getAssignees();
+        $('#taskCollapse.collapse').toggleClass('show');
+    });
+
+    // <------------------------------------------------------------------------>//
+    // PROJECT NAV FUNCTIONS //
     function loadProjectNavigation(pm_id) {
         fetchArray('userProjects', pm_id);
     }
@@ -66,28 +78,21 @@ $(document).ready(function() {
         });
     }
 
-    // function thisAndThat() {
-    //     $.get("api/tasks/allofit").then(data => {
-    //         console.log(data)
-    //     })
-    // }
-    // thisAndThat()
+    // <------------------------------------------------------------------------>//
+    // PHASES  DISPLAY FUNCTIONS //
 
     function displayProjectPhases(projectId, data) {
         // Populates phase options for Add Task when phases are displayed
         getPhases(projectId);
 
-        console.log(data);
         phaseArray = [];
         projectPhases = data;
         projectPhases.forEach((phase) => {
             $.get('/api/pmview/allofit/' + phase.id)
                 .then((res) => {
-                    console.log(res);
                     var taskArrayText = '';
                     for (let i = 0; i < res.Tasks.length; i++) {
                         var userId = res.Tasks[i].UserId - 1;
-                        console.log(userId);
                         taskArrayText += `
                            <div class="card task-card" style="width:auto">
 
@@ -128,7 +133,6 @@ $(document).ready(function() {
 
     //displays the called project in the projectDisplayArea
     function loadProject(project_id) {
-        // projectDisplayArea.append("You selected project " + project_id);
         fetchArray('projectPhases', project_id);
         // Gets phases of currently loaded project to populate phase options for Add Task
         getPhases(project_id);
@@ -158,13 +162,10 @@ $(document).ready(function() {
         }
     }
 
-    //--------------------------------------------------------------------------------------//
+    // <--------------------------------------------------------------------------->//
     // PHASE SUBMISSION //
 
-    // START THE SAVE FUNCTIONS FOR PHASE SUBMISSION
-    $(phaseSubmit).on('click', handleNewPhase);
-
-    // MAKES A NEW PHASE OBJECT TO BE PUT INTO THE DB
+    // Makes new phase object for DB population
     function handleNewPhase(event) {
         event.preventDefault();
         let newPhase = phaseTitleInput.val().trim();
@@ -179,13 +180,62 @@ $(document).ready(function() {
         phaseTitleInput.val('');
     }
 
-    // POSTS THE NEW PHASE OBJECT IN THE DB
+    // Posts new phase object in DB
     function createPhase(phaseData) {
         $.post('/api/project-phase', phaseData).done(() => {
             loadProject(phaseData.ProjectId);
         });
     }
 
+    function getProjects(mgrId) {
+        $.get(`/api/projectsnav/${mgrId}`, renderProjectList);
+    }
+
+    // Gets and renders projects for phase submission on frontend //
+
+    function renderProjectList(data) {
+        var rowsToAdd = [];
+        for (var i = 0; i < data.length; i++) {
+            rowsToAdd.push(createProjectRow(data[i]));
+        }
+        phaseProjectId.empty();
+        phaseProjectId.append(rowsToAdd);
+        phaseProjectId.val(projectId);
+    }
+
+    function createProjectRow(project) {
+        var listOption = $('<option>');
+        listOption.attr('value', project.id);
+        listOption.text(project.title);
+        return listOption;
+    }
+
+    // <--------------------------------------------------------------------------->//
+    // TASK SUBMISSION //
+
+    //Creates new task object for DB
+    function handleNewTask(event) {
+        event.preventDefault();
+        let newTask = taskTitleInput.val().trim();
+        if (!newTask) {
+            return;
+        } else
+            createTask({
+                taskname: newTask,
+                isComplete: false,
+                ProjectPhaseId: $('#phaseId').val(),
+                UserId: $('#assigneeId').val()
+            });
+        taskTitleInput.val('');
+        loadProject(currentProjectId);
+    }
+
+    // Posts new task object for DB
+    function createTask(taskData) {
+        $.post('/api/tasks', taskData)
+    }
+
+    // Gets and renders phases for task submission on frontend //
     function getPhases(projectId) {
         $.get(`/api/project-phase/project_id=${projectId}`, renderPhaseList);
     }
@@ -207,6 +257,7 @@ $(document).ready(function() {
         return listOption;
     }
 
+    // Gets and renders assignees for task submission on frontend //
     function getAssignees() {
         $.get('/api/users', renderAssigneeList);
     }
@@ -228,75 +279,8 @@ $(document).ready(function() {
         return listOption;
     }
 
-    // --------------------------------------------------------------------------------//
-    // TASK SUBMISSION //
-
-    // STARTS THE SAVE FUNCTION FOR TASKS SUBMISSION
-    $(taskSubmit).on('click', handleNewTask);
-
-    //CREATES A NEW TASK OBJECT TO BE PUT IN THE DB
-    function handleNewTask(event) {
-        event.preventDefault();
-        let newTask = taskTitleInput.val().trim();
-        if (!newTask) {
-            return;
-        } else
-            createTask({
-                taskname: newTask,
-                isComplete: false,
-                ProjectPhaseId: $('#phaseId').val(),
-                UserId: $('#assigneeId').val()
-            });
-        taskTitleInput.val('');
-        loadProject(currentProjectId);
-    }
-
-    //POST THE NEW TASK ITEM IN THE DB
-    function createTask(taskData) {
-        $.post('/api/tasks', taskData)
-            .then
-            // getPhaseTasks()
-            ();
-    }
-
-    $(addProjectBtn).on('click', function() {
-        $('#projectCollapse.collapse').toggleClass('show');
-    });
-
-    $(addPhaseBtn).on('click', function() {
-        // getProjects();
-        $('#phaseCollapse.collapse').toggleClass('show');
-    });
-
-    function getProjects(mgrId) {
-        $.get(`/api/projectsnav/${mgrId}`, renderProjectList);
-    }
-
-    function renderProjectList(data) {
-        var rowsToAdd = [];
-        for (var i = 0; i < data.length; i++) {
-            rowsToAdd.push(createProjectRow(data[i]));
-        }
-        phaseProjectId.empty();
-        phaseProjectId.append(rowsToAdd);
-        phaseProjectId.val(projectId);
-    }
-
-    function createProjectRow(project) {
-        var listOption = $('<option>');
-        listOption.attr('value', project.id);
-        listOption.text(project.title);
-        return listOption;
-    }
-
-    $(addTaskBtn).on('click', function() {
-        getAssignees();
-        $('#taskCollapse.collapse').toggleClass('show');
-    });
-
     // <-------------------------------------------------------------------------> //
     // PHASE DELETE //
-    $(document).on("click", "#phase-delete", handlePhaseDelete)
 
     function handlePhaseDelete() {
         let phaseId = $(this).attr("data-id")
@@ -308,7 +292,6 @@ $(document).ready(function() {
 
     // <-------------------------------------------------------------------------> //
     // TASK DELETE //
-    $(document).on("click", "#task-delete", handleTaskDelete)
 
     function handleTaskDelete() {
         let taskId = $(this).attr("data-id")
@@ -317,6 +300,4 @@ $(document).ready(function() {
             url: "/api/tasks/" + taskId
         }).then(() => { loadProject(currentProjectId) })
     }
-
-
 });

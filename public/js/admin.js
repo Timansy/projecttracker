@@ -1,21 +1,19 @@
 $(document).ready(function() {
     var adminId;
 
-    // This file just does a GET request to figure out which user is logged in
-    // and updates the HTML on the page
-
+    // GET request to figure out which user is logged in; Updates the HTML on the page
     $.get('/api/user_data').then(function(data) {
-        //this is where we could handle routing based upon auth_level
+        // Handles routing based upon auth_level
         $('.member-name').text(data.username);
         $('.member-id').text(data.id);
         $('.member-auth_level').text(`administrator`);
-        // window.location.replace(`/${data.auth_level}`);
         adminId = data.id;
 
         // Renders Admin's current projects
         renderProjects(adminId);
     });
 
+    // Changes Auth_level
     $('.auth_selector').change(function() {
         var val = this.value;
         $.get('/api/user_data').then(function(data) {
@@ -25,14 +23,20 @@ $(document).ready(function() {
         });
     });
 
+    // <----------------------------------------------------------------------->//
+    // CLICK EVENTS //
     $('.project-form').on('submit', handleNewProjSubmit);
+    $('.user-form').on('submit', handleNewUserSubmit);
+    $(document).on("click", "#project-delete", handleProjectDelete)
+
+    // <------------------------------------------------------------------------>//
+    // PROJECT FUNCTIONS //
 
     function handleNewProjSubmit(event) {
         event.preventDefault();
 
         let titleInput = $('#title-input').val().trim();
         let mgrUsernameInput = $('#pm-input').val().trim();
-        // let adminId = $('.member-id').text();
 
         $.get(`/api/username/${mgrUsernameInput}`)
             .then(function(data) {
@@ -86,7 +90,8 @@ $(document).ready(function() {
         });
     }
 
-    $('.user-form').on('submit', handleNewUserSubmit);
+    // <------------------------------------------------------------------------>//
+    // USER FUNCTIONS //
 
     function handleNewUserSubmit(event) {
         event.preventDefault();
@@ -117,9 +122,9 @@ $(document).ready(function() {
         });
     }
 
-    //<-------------------------------------------------------------------------------------------->//
-    // PROJECT DELETE //
-    $(document).on("click", "#project-delete", handleProjectDelete)
+    //<--------------------------------------------------------------------------->//
+    // PROJECT DELETE FUNCTIONS //
+
 
     function handleProjectDelete() {
         let projectId = $(this).attr("data-id")

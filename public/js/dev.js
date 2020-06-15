@@ -1,12 +1,10 @@
 $(document).ready(function() {
-    // This file just does a GET request to figure out which user is logged in
-    // and updates the HTML on the page
+    // GET request for user login info; Updates the HTML on the page
     $.get('/api/user_data').then(function(data) {
-        //this is where we could handle routing based upon auth_level
+        // Handles routing based upon auth_level
         $('.member-name').text(data.username);
         $('.member-id').text(data.id);
         $('.member-auth_level').text(`developer`);
-        // window.location.replace(`/${data.auth_level}`);
         renderProjectBtns(data.id);
     });
 
@@ -18,6 +16,11 @@ $(document).ready(function() {
             window.location.replace(`/${val}`);
         });
     });
+
+    $('.user-projects').on('click', 'button.project-btn', handleProjectBtnClick);
+
+    // <------------------------------------------------------------------------>//
+    // PROJECT BUTTON FUNCTIONS //
 
     function renderProjectBtns(userId) {
         $.get(`/api/task-data/user/${userId}`)
@@ -49,21 +52,10 @@ $(document).ready(function() {
         });
     }
 
-    // When a project button is clicked
-    $('.user-projects').on(
-        'click',
-        'button.project-btn',
-        handleProjectBtnClick
-    );
-
-
-    // Handles Project Button click
+    // Handles Project FrontEnd //
     function handleProjectBtnClick(event) {
         event.preventDefault();
         $('.tasks-deck').empty();
-
-        // GOTTA PRESS TWICE BUT COLLAPSES PROJECTS AFTER THAT, MAKES THE API CALL EVERYTIME THO, MAKE A SEPERATE FUNCTION?
-        // $('.tasks-deck').toggleClass('d-none')
 
         let userId = $('.member-id').text();
 
@@ -84,6 +76,9 @@ $(document).ready(function() {
             appendTasks(userTasksArr);
         });
     }
+
+    // <------------------------------------------------------------------------>//
+    // TASK FRONT-END FUNCTIONS //
 
     function appendTasks(array) {
         // Creating variables to be used in status selector of tasks

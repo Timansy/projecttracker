@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
     // Getting references to our form and inputs
     var loginForm = $('form.login');
     var usernameInput = $('input#username-input');
@@ -6,8 +6,11 @@ $(document).ready(function () {
     var registerBtn = $('input.register-btn');
     var resetBtn = $('input.reset-btn');
 
-    // When the form is submitted, we validate there's an email and password entered
-    loginForm.on('submit', function (event) {
+    resetBtn.on('click', handleResetRedirect);
+    registerBtn.on('click', handleRegisterRedirect);
+
+    // When the form is submitted, validate there's an email and password entered
+    loginForm.on('submit', function(event) {
         event.preventDefault();
         var userData = {
             username: usernameInput.val().trim(),
@@ -18,36 +21,32 @@ $(document).ready(function () {
             return;
         }
 
-        // If we have an username and password we run the loginUser function and clear the form
+        // When username and password are validated, run the loginUser function and clear the form
         loginUser(userData.username, userData.password);
         usernameInput.val('');
         passwordInput.val('');
     });
 
-    // loginUser does a post to our "api/login" route and if successful, redirects us the the members page
+    // loginUser posts "api/login" route and if successful, redirects to members page
     function loginUser(username, password) {
         $.post('/api/login', {
-            username: username,
-            password: password
-        })
-            .then(function () {
+                username: username,
+                password: password
+            })
+            .then(function() {
                 //go into secure area
                 window.location.replace('/in');
             })
-            .catch(function (err) {
+            .catch(function(err) {
                 console.log(err);
             });
     }
-
-    registerBtn.on('click', handleRegisterRedirect);
 
     function handleRegisterRedirect(event) {
         event.preventDefault();
 
         window.location.replace('/signup');
     }
-
-    resetBtn.on('click', handleResetRedirect);
 
     function handleResetRedirect(event) {
         event.preventDefault();
