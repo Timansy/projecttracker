@@ -16,9 +16,11 @@ $(document).ready(function () {
         };
 
         if (!userData.username || !userData.password) {
-            return;
+            $('div#alert').text('Please fill out entire form');
+            $('#alert').fadeIn(500);
         } else if (userData.password !== userData.passwordConfirm) {
-            return;
+            $('div#alert').text('Passwords do not match');
+            $('#alert').fadeIn(500);
         } else {
             signUpUser(userData.username, userData.password);
             usernameInput.val('');
@@ -36,14 +38,20 @@ $(document).ready(function () {
             password: password
         })
             .then(function (data) {
-                window.location.replace('/in');
-            })
-            .catch(handleLoginErr);
-    }
+                $('div#alert').text('Account successfully created');
+                $('#alert').fadeIn(500);
 
-    function handleLoginErr(err) {
-        $('#alert .msg').text(err.responseJSON);
-        $('#alert').fadeIn(500);
+                // Creates one second delay so user can see the success message before being redirected to Admin view
+                setTimeout(function () {
+                    window.location.replace('/in');
+                }, 1000);
+            })
+            .catch(function (err) {
+                if (err) {
+                    $('div#alert').text('Username already exists');
+                    $('#alert').fadeIn(500);
+                }
+            });
     }
 
     loginBtn.on('click', handleLoginRedirect);

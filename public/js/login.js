@@ -37,8 +37,11 @@ $(document).ready(function() {
                 //go into secure area
                 window.location.replace('/in');
             })
-            .catch(function(err) {
-                console.log(err);
+            .catch(function (err) {
+                if (err) {
+                    $('div#alert').text('Invalid Username or Password');
+                    $('#alert').fadeIn(500);
+                }         
             });
     }
 
