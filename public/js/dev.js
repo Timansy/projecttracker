@@ -106,28 +106,30 @@ $(document).ready(function () {
             }
 
             $('.tasks-deck').append(`
-            <div class="card task-card" style="width: 18rem;">
-                <div class="card-body">
-                    <h3>${task.taskname}</h3>
-                    <ul>
-                        <li>
-                            <h5>${task.ProjectPhase.title}</h5>
-                         </li>
-                         <li>
-                        <h5>Status:</h5>
-                            <div class="status-dropdown">
-                                <select
-                                class="status_selector"
-                                name="isComplete"
-                                id="${task.id}"
-                                >
-                                    <option value="${task.isComplete}" selected>${statusText}</option>
-                                    <option value="${oppositeVal}">${oppositeStatusText}</option>
-                            </div>
-                        </li>
-                    </ul>
-                 </div>
-            </div>
+            <div class="w-33">
+                <div class="task-card card m-2">
+                    <div class="card-body">
+                        <h3 class="text-center">${task.taskname}</h3>
+                        <ul>
+                            <li>
+                                <h5>${task.ProjectPhase.title}</h5>
+                            </li>
+                            <li>
+                            <h5>Status:</h5>
+                                <div class="status-dropdown">
+                                    <select
+                                    class="status_selector"
+                                    name="isComplete"
+                                    id="${task.id}"
+                                    >
+                                        <option value="${task.isComplete}" selected>${statusText}</option>
+                                        <option value="${oppositeVal}">${oppositeStatusText}</option>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>   
             `);
         });
 
