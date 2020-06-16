@@ -106,8 +106,8 @@ $(document).ready(function () {
             }
 
             $('.tasks-deck').append(`
-            <div class="w-33">
-                <div class="task-card card m-2">
+            <div class="col-lg-3 col-md-4 col-sm-12">
+                <div class="task-card card mt-4 w-100">
                     <div class="card-body">
                         <h3 class="text-center">${task.taskname}</h3>
                         <ul>

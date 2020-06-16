@@ -85,9 +85,9 @@ $(document).ready(function () {
                 <div class="w-33">
                     <div class="card m-2">
                         <div class="card-body">
-                            <button class="project-delete btn btn-danger" id="project-delete" style="float:right; margin: 5px;" data-id="${project.id}">X</button>
-                            <p>Title: ${project.title}</p>
-                            <p id="pm-name">Project Manager Id: ${project.projectMgrIdId}</p>
+                            <button class="project-delete btn btn-danger" id="project-delete" style="float:right;" data-id="${project.id}">X</button>
+                            <h4>${project.title}</h4><br>
+                            <p id="pm-name">Manager Id: ${project.projectMgrIdId}</p>
                             <p>Complete: ${project.complete}</p>
                         </div>
                     </div>
