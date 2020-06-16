@@ -121,7 +121,7 @@ $(document).ready(function () {
                                   </div>`;
                     }
                     phaseArray.push(`<!--${phase.id}-->
-                    <div class="col-md-4 col-sm-12 container-fluid">
+                    <div class="col-md-3 col-sm-12 container-fluid">
                         <div class="phase-card card" id="phase-card"> 
                             <div style="text-align: center; margin-top: 10px;">
                                 <button class="phase-delete btn btn-danger" id="phase-delete" style="float:right; margin: 5px;" data-id="${phase.id}">X</button>
@@ -173,7 +173,6 @@ $(document).ready(function () {
                 break;
         }
     }
-
     // <--------------------------------------------------------------------------->//
     // PHASE SUBMISSION //
 
