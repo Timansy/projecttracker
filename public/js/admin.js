@@ -82,15 +82,16 @@ $(document).ready(function () {
         $.get(`/api/projects/${userId}`).then(function (data) {
             data.forEach(function (project) {
                 $('.project-cards').append(`
-                <div class="col card">
-                <div class="card-body">
-                <button class="project-delete btn btn-danger" id="project-delete" style="float:right; margin: 5px;" data-id="${project.id}">X</button>
-                  <p>Title: ${project.title}</p>
-                  <p id="pm-name">Project Manager Id: ${project.projectMgrIdId}</p>
-                  <p>Complete: ${project.complete}</p>
-                  </div>
+                <div class="w-33">
+                    <div class="card m-2">
+                        <div class="card-body">
+                            <button class="project-delete btn btn-danger" id="project-delete" style="float:right; margin: 5px;" data-id="${project.id}">X</button>
+                            <p>Title: ${project.title}</p>
+                            <p id="pm-name">Project Manager Id: ${project.projectMgrIdId}</p>
+                            <p>Complete: ${project.complete}</p>
+                        </div>
+                    </div>
                 </div>
-                <br>
                 `);
             });
         });
@@ -117,6 +118,8 @@ $(document).ready(function () {
         if (!userData.username || !userData.password) {
             $('#new-user-alert').text('Please fill out entire form');
             $('#new-user-alert').fadeIn(500);
+
+            setTimeout();
             return;
         } else if (userData.password !== userData.passwordConfirm) {
             $('#new-user-alert').text('Passwords do not match');

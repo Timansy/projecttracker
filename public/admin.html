@@ -1,93 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/flatly/bootstrap.min.css" rel="stylesheet" />
-    <link
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/flatly/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
             href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
             rel="stylesheet"
         />
-    <link rel="stylesheet" href="/css/views.css" media="screen" title="no title" />
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <title>Project Sprinter</title>
-</head>
+        <link
+            rel="stylesheet"
+            href="/css/views.css"
+            media="screen"
+            title="no title"
+        />
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"
+        ></script>
+        <title>Project Sprinter</title>
+    </head>
 
-<body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <span class="member-id"></span> |
-                <span class="member-name"></span> |
-                <span class="member-auth_level"></span> &nbsp;|&nbsp;Select your authorization level:
-                <select class="auth_selector" name="auth_level" id="auth_level_selector">
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <span class="member-id"></span> |
+                    <span class="member-name"></span> |
+                    <span class="member-auth_level"></span> &nbsp;|&nbsp;Select
+                    your authorization level:
+                    <select
+                        class="auth_selector"
+                        name="auth_level"
+                        id="auth_level_selector"
+                    >
                         <option value="administrator" selected
                             >Administrator</option
                         >
                         <option value="project_manager">Project Manager</option>
                         <option value="developer">Developer</option>
-                    </select> &nbsp;|&nbsp;
-                <a href="/logout">
+                    </select>
+                    &nbsp;|&nbsp;
+                    <a href="/logout">
                         Logout
                     </a>
+                </div>
             </div>
         </nav>
-        
-        <h3 class="py-4" style="text-align: center;">My Projects</h3>
-        <div class="project-cards row"></div>
-        <br />
 
-        <div
-            class="row fixed-bottom"
-            style="margin-bottom: 20px; margin-left: 20px;"
-        >
-            <div class="col-4">
-                <h3>Create New Project:</h3>
-                <form class="project-form">
-                    <div class="form-group">
-                        <label for="title"></label>
-                        <input class="form-control" id="title-input" type="text" placeholder="Project Title" name="title" />
-                        <label for="pm-username"></label>
-                        <input id="pm-input" class="form-control" placeholder="Project Manager Username" type="text" name="pm-username" />
-                    <div
-                        style="display: none;"
-                        id="new-proj-alert"
-                        class="alert alert-danger"
-                        role="alert"
-                    >
-                        <span
-                            class="glyphicon glyphicon-exclamation-sign"
-                            aria-hidden="true"
-                        ></span>
-                        <span class="sr-only"></span>
-                        <span class="msg"></span>
-                    </div>
-                    <br>
-                    <button class="new-project-btn btn" type="submit">
-
-                        Create Project
-                    </button>
-                    </div>
-                    
-            </form>
+        <!-- Project Cards -->
+        <div class="container">
+            <h3 class="py-4" style="text-align: center;">My Projects</h3>
+            <div class="project-cards card-deck justify-content-center"></div>
         </div>
 
-        <div class="col-4">
-            <h3>Create New User:</h3>
-            <form class="user-form">
-                <label for="username"></label>
-                <input id="username-input" class="form-control" placeholder="Username" type="text" name="username" />
-                <label for="password"></label>
-                <input id="password-input" class="form-control" placeholder="Password" type="password" name="password" />
-                <label for="password-confirm"></label>
-                <input id="confirm-input" class="form-control" placeholder="Confirm Password" type="password" name="password-confirm" />
-                <span class="password-auth"></span>
-                <label for="roles"></label>
-                <select class="form-control" name="roles" id="roles">
+        <!-- Create User Form -->
+        <div class="container">
+            <div class="col-md-6 col-sm-12 float-left pt-4">
+                <h3>Create New User:</h3>
+                <form class="user-form">
+                    <label for="username"></label>
+                    <input
+                        id="username-input"
+                        class="form-control"
+                        placeholder="Username"
+                        type="text"
+                        name="username"
+                    />
+                    <label for="password"></label>
+                    <input
+                        id="password-input"
+                        class="form-control"
+                        placeholder="Password"
+                        type="password"
+                        name="password"
+                    />
+                    <label for="password-confirm"></label>
+                    <input
+                        id="confirm-input"
+                        class="form-control"
+                        placeholder="Confirm Password"
+                        type="password"
+                        name="password-confirm"
+                    />
+                    <span class="password-auth"></span>
+                    <label for="roles"></label>
+                    <select class="form-control" name="roles" id="roles">
                         <option value="project_manager">Project Manager</option>
                         <option value="developer">Developer</option>
                     </select>
@@ -96,24 +105,53 @@
                         id="new-user-alert"
                         class="alert alert-danger"
                         role="alert"
-                    >
-                        <span
-                            class="glyphicon glyphicon-exclamation-sign"
-                            aria-hidden="true"
-                        ></span>
-                        <span class="sr-only"></span>
-                        <span class="msg"></span>
-                    </div>
+                    ></div>
                     <br />
                     <button class="new-user-btn btn" type="submit">
                         Create User
                     </button>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/admin.js"></script>
-</body>
+        <!-- Create Project Form -->
+        <div class="container">
+            <div class="col-md-6 col-sm-12 float-right pt-4">
+                <h3>Create New Project:</h3>
+                <form class="project-form">
+                    <div class="form-group">
+                        <label for="title"></label>
+                        <input
+                            class="form-control"
+                            id="title-input"
+                            type="text"
+                            placeholder="Project Title"
+                            name="title"
+                        />
+                        <label for="pm-username"></label>
+                        <input
+                            id="pm-input"
+                            class="form-control"
+                            placeholder="Project Manager Username"
+                            type="text"
+                            name="pm-username"
+                        />
+                        <div
+                            style="display: none;"
+                            id="new-proj-alert"
+                            class="alert alert-danger"
+                            role="alert"
+                        ></div>
+                        <br />
+                        <button class="new-project-btn btn" type="submit">
+                            Create Project
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/admin.js"></script>
+    </body>
 </html>
