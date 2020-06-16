@@ -98,16 +98,24 @@ $(document).ready(function () {
                     var taskArrayText = '';
                     for (let i = 0; i < res.Tasks.length; i++) {
                         var userId = res.Tasks[i].UserId - 1;
+                        var statusIcon;
+
+                        if (res.Tasks[i].isComplete === true) {
+                            statusIcon = `<i class="fas fa-check"></i>`;
+                        } else {
+                            statusIcon = `<i class="fas fa-times"></i>`;
+                        }
+
                         taskArrayText += `
                            <div class="card task-card" style="width:auto">
 
                           <div class="card-body">
                           <button class="btn-sm btn-danger task-delete" id="task-delete"
                           style="float:right; margin: 5px;" data-id="${res.Tasks[i].id}">X</button>       
-                          <h5>${res.Tasks[i].taskname}</h5>
-                                  <ul>
-                                      <li>Complete: <br> ${res.Tasks[i].isComplete}</li>
-                                      <li> Assignee: <br> ${res.Users[userId].username}</li>
+                          <h5>${res.Tasks[i].taskname}</h5><br>
+                                  <ul class="list-unstyled">
+                                      <li>Complete: ${statusIcon}</li>
+                                      <li> Assignee: ${res.Users[userId].username}</li>
                                   </ul>
                                   </div>
                                   </div>`;

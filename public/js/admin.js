@@ -81,6 +81,15 @@ $(document).ready(function () {
 
         $.get(`/api/projects/${userId}`).then(function (data) {
             data.forEach(function (project) {
+                let statusIcon;
+
+                if (project.complete === true) {
+                    statusIcon = `<i class="fas fa-check"></i>`;
+                } else {
+                    statusIcon = `<i class="fas fa-times"></i>
+                    `;
+                }
+                console.log(statusIcon);
                 $('.project-cards').append(`
                 <div class="w-33">
                     <div class="card m-2">
@@ -88,7 +97,7 @@ $(document).ready(function () {
                             <button class="project-delete btn btn-danger" id="project-delete" style="float:right;" data-id="${project.id}">X</button>
                             <h4>${project.title}</h4><br>
                             <p id="pm-name">Manager Id: ${project.projectMgrIdId}</p>
-                            <p>Complete: ${project.complete}</p>
+                            <p>Complete: ${statusIcon}</p>
                         </div>
                     </div>
                 </div>
