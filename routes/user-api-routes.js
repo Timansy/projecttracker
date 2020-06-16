@@ -12,7 +12,7 @@ module.exports = (app) => {
     });
 
     // GET one user by Username
-    app.get('/api/username/:username', (req, res) => {
+    app.get('/api/users/username/:username', (req, res) => {
         db.User.findOne({
             where: {
                 username: req.params.username
@@ -24,26 +24,29 @@ module.exports = (app) => {
             });
     });
 
-    // GET one user by ID
-    app.get('/api/users/:id', (req, res) => {
+    // Route for creating a new user as an Admin
+    app.post('/api/users/create-user', function (req, res) {
         db.User.findOne({
             where: {
-                id: req.params.id
+                username: req.body.username
             }
-        })
-            .then((data) => res.json(data))
-            .catch((err) => {
-                if (err) throw err;
-            });
-    });
-
-    // POST new user
-    app.post('/api/users', (req, res) => {
-        db.User.create(req.body)
-            .then((data) => res.json(data))
-            .catch((err) => {
-                if (err) throw err;
-            });
+        }).then(function (dbUser) {
+            if (dbUser) {
+                res.redirect(307, '/administrator');
+            } else {
+                db.User.create({
+                    username: req.body.username,
+                    password: req.body.password,
+                    auth_level: req.body.auth_level
+                })
+                    .then(function () {
+                        res.status(200);
+                    })
+                    .catch(function (err) {
+                        res.status(401).json(err);
+                    });
+            }
+        });
     });
 
     // DELETE one user
@@ -60,7 +63,7 @@ module.exports = (app) => {
     });
 
     // PUT route for updating a users password by username
-    app.put('/api/user-password', (req, res) => {
+    app.put('/api/users/update-password', (req, res) => {
         let newPasswordInput = req.body.password;
 
         // Hashes new password

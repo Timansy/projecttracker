@@ -36,7 +36,7 @@ $(document).ready(function () {
     function resetPassword(username, password) {
         $.ajax({
             type: 'PUT',
-            url: '/api/user-password',
+            url: '/api/users/update-password',
             data: { username: username, password: password }
         })
             .done(function () {
@@ -59,6 +59,6 @@ $(document).ready(function () {
     function handleSignupRedirect(event) {
         event.preventDefault();
 
-        window.location.replace('/signup');
+        window.location.replace('/register');
     }
 });

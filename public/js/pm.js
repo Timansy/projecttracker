@@ -146,18 +146,16 @@ $(document).ready(function () {
     function fetchArray(arrayName, id_ref) {
         switch (arrayName) {
             case 'userProjects':
-                $.get(`/api/projectsnav/${id_ref}`).then((data) => {
+                $.get(`/api/projects/pm/${id_ref}`).then((data) => {
                     displayUserProjectsNav(data);
                 });
                 break;
             case 'projectPhases':
                 projectDisplayArea.empty();
-                $.get(`/api/project-phase/project_id=${id_ref}`).then(
-                    (data) => {
-                        currentProjectId = id_ref;
-                        displayProjectPhases(currentProjectId, data);
-                    }
-                );
+                $.get(`/api/project-phase/project/${id_ref}`).then((data) => {
+                    currentProjectId = id_ref;
+                    displayProjectPhases(currentProjectId, data);
+                });
                 break;
             case 'phaseTasks':
                 $.get(`/api/tasks/phase/${id_ref}`, (req, res) => {
@@ -199,7 +197,7 @@ $(document).ready(function () {
     }
 
     function getProjects(mgrId) {
-        $.get(`/api/projectsnav/${mgrId}`, renderProjectList);
+        $.get(`/api/projects/pm/${mgrId}`, renderProjectList);
     }
 
     // Gets and renders projects for phase submission on frontend //
@@ -254,7 +252,7 @@ $(document).ready(function () {
 
     // Gets and renders phases for task submission on frontend //
     function getPhases(projectId) {
-        $.get(`/api/project-phase/project_id=${projectId}`, renderPhaseList);
+        $.get(`/api/project-phase/project/${projectId}`, renderPhaseList);
     }
 
     function renderPhaseList(data) {

@@ -27,7 +27,7 @@ $(document).ready(function () {
     // PROJECT BUTTON FUNCTIONS //
 
     function renderProjectBtns(userId) {
-        $.get(`/api/task-data/user/${userId}`)
+        $.get(`/api/tasks/task-data/user/${userId}`)
             .then(function (data) {
                 var projectIdArr = [];
 
@@ -68,7 +68,7 @@ $(document).ready(function () {
         let userTasksArr = [];
 
         // Getting all task data by user
-        $.get(`/api/task-data/user/${userId}`).then(function (data) {
+        $.get(`/api/tasks/task-data/user/${userId}`).then(function (data) {
             // Loop through query data and add objects, with a project id that matches this buttons id, to the user tasks array -- will create an array of objects that contains this users tasks by project
             data.forEach(function (task) {
                 if (task.ProjectPhase.ProjectId === projectId) {
@@ -137,8 +137,6 @@ $(document).ready(function () {
     // Updates task status
     function handleTaskStatusChange() {
         $('.status_selector').change(function () {
-            console.log(this.id, this.value);
-
             $.ajax({
                 type: 'PUT',
                 url: '/api/tasks',

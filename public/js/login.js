@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // Getting references to our form and inputs
     var loginForm = $('form.login');
     var usernameInput = $('input#username-input');
@@ -10,7 +10,7 @@ $(document).ready(function() {
     registerBtn.on('click', handleRegisterRedirect);
 
     // When the form is submitted, validate there's an email and password entered
-    loginForm.on('submit', function(event) {
+    loginForm.on('submit', function (event) {
         event.preventDefault();
         var userData = {
             username: usernameInput.val().trim(),
@@ -30,10 +30,10 @@ $(document).ready(function() {
     // loginUser posts "api/login" route and if successful, redirects to members page
     function loginUser(username, password) {
         $.post('/api/login', {
-                username: username,
-                password: password
-            })
-            .then(function() {
+            username: username,
+            password: password
+        })
+            .then(function () {
                 //go into secure area
                 window.location.replace('/in');
             })
@@ -41,14 +41,14 @@ $(document).ready(function() {
                 if (err) {
                     $('div#alert').text('Invalid Username or Password');
                     $('#alert').fadeIn(500);
-                }         
+                }
             });
     }
 
     function handleRegisterRedirect(event) {
         event.preventDefault();
 
-        window.location.replace('/signup');
+        window.location.replace('/register');
     }
 
     function handleResetRedirect(event) {
