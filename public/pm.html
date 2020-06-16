@@ -1,94 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/flatly/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="css/styles.css"
+            media="screen"
+            title="no title"
+        />
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"
+        ></script>
+        <title>Project Sprinter</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/flatly/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css" media="screen" title="no title">
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <title>Project Sprinter</title>
-</head>
-
-<body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <span class="member-id"></span> | <span class="member-name"></span> | <span class="member-auth_level"></span> &nbsp;|&nbsp;Select your authorization level: <select class="auth_selector" name="auth_level" id="auth_level_selector">
-        <option value="administrator">Administrator</option>
-        <option value="project_manager" selected>Project Manager</option>
-        <option value="developer">Developer</option>
-      </select> &nbsp;|&nbsp;
-                <a href="/logout">
-        Logout
-      </a>
-            </div><span id="active-project"></span><span id="project-nav-container" style="float: right;"></span>
-        </div>
-    </nav>
-    <div class="container-fluid">
-        <div class="phases-deck row board card-deck">
-
-        </div>
-    </div>
-    <nav class="navbar fixed-bottom navbar-light bg-light">
-        <div class="accordion" id="accordionExample">
-            <div class="row">
-
-                <div class="card col-fluid">
-                    <div class="card-header" id="headingOne">
-                        <button type="submit" class="btn btn-lg btn-success" id="addPhaseBtn">Add Phase</button>
-                    </div>
-                    <div id="phaseCollapse" class="collapse" style="width: 18rem;" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        <form>
-                            <div class="form-group">
-                                <label for="phaseTitle">Phase Title</label>
-                                <input type="text" class="form-control" id="phase-title" placeholder="Enter Phase Title">
-
-                            </div>
-                            <div class="form-group">
-                                <label for="category">Select Project:</label>
-                                <select class="form-control" id="projectId">
-                          </select>
-                            </div>
-                            <button id="phaseSubmit" type="submit">submit</button>
-                        </form>
-                    </div>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <span class="member-id"></span> |
+                    <span class="member-name"></span> |
+                    <span class="member-auth_level"></span> &nbsp;|&nbsp;Select
+                    your authorization level:
+                    <select
+                        class="auth_selector"
+                        name="auth_level"
+                        id="auth_level_selector"
+                    >
+                        <option value="administrator">Administrator</option>
+                        <option value="project_manager" selected
+                            >Project Manager</option
+                        >
+                        <option value="developer">Developer</option>
+                    </select>
+                    &nbsp;|&nbsp;
+                    <a href="/logout">
+                        Logout
+                    </a>
                 </div>
-                <div class="card col-fluid">
-                    <div class="card-header" id="headingOne">
-                        <button type="submit" class="btn  btn-success btn-lg" id="addTaskBtn">Add Task</button>
+                <span id="active-project"></span
+                ><span id="project-nav-container" style="float: right;"></span>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="phases-deck row board card-deck"></div>
+        </div>
+        <nav class="navbar fixed-bottom navbar-light bg-light">
+            <div class="accordion" id="accordionExample">
+                <div class="row">
+                    <div class="card col-fluid">
+                        <div class="card-header" id="headingOne">
+                            <button
+                                type="submit"
+                                class="btn btn-lg btn-success"
+                                id="addPhaseBtn"
+                            >
+                                Add Phase
+                            </button>
+                        </div>
+                        <div
+                            id="phaseCollapse"
+                            class="collapse"
+                            style="width: 18rem;"
+                            aria-labelledby="headingOne"
+                            data-parent="#accordionExample"
+                        >
+                            <form>
+                                <div class="form-group">
+                                    <label for="phaseTitle">Phase Title</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="phase-title"
+                                        placeholder="Enter Phase Title"
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label for="category"
+                                        >Select Project:</label
+                                    >
+                                    <select class="form-control" id="projectId">
+                                    </select>
+                                </div>
+                                <div
+                                    style="display: none;"
+                                    id="add-phase-alert"
+                                    class="alert alert-danger"
+                                    role="alert"
+                                >
+                                    <span
+                                        class="glyphicon glyphicon-exclamation-sign"
+                                        aria-hidden="true"
+                                    ></span>
+                                    <span class="sr-only"></span>
+                                    <span class="msg"></span>
+                                </div>
+                                <button id="phaseSubmit" type="submit">
+                                    submit
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                    <div id="taskCollapse" class="collapse" style="width: 18rem;" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        <form>
-                            <div class="form-group">
-                                <label for="taskTitle">Task Title</label>
-                                <input type="text" class="form-control" id="task-title" placeholder="Enter Task Title">
-                            </div>
-                            <div class="form-group">
-                                <label for="category">Select Phase:</label>
-                                <select class="form-control" id="phaseId">
-                              </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="category">Select Assignee:</label>
-                                <select class="form-control" id="assigneeId">
-                              </select>
-                            </div>
-                            <button id="taskSubmit" type="submit">submit</button>
-                        </form>
+                    <div class="card col-fluid">
+                        <div class="card-header" id="headingOne">
+                            <button
+                                type="submit"
+                                class="btn btn-success btn-lg"
+                                id="addTaskBtn"
+                            >
+                                Add Task
+                            </button>
+                        </div>
+                        <div
+                            id="taskCollapse"
+                            class="collapse"
+                            style="width: 18rem;"
+                            aria-labelledby="headingOne"
+                            data-parent="#accordionExample"
+                        >
+                            <form>
+                                <div class="form-group">
+                                    <label for="taskTitle">Task Title</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="task-title"
+                                        placeholder="Enter Task Title"
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Select Phase:</label>
+                                    <select class="form-control" id="phaseId">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category"
+                                        >Select Assignee:</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        id="assigneeId"
+                                    >
+                                    </select>
+                                </div>
+                                <div
+                                    style="display: none;"
+                                    id="add-task-alert"
+                                    class="alert alert-danger"
+                                    role="alert"
+                                >
+                                    <span
+                                        class="glyphicon glyphicon-exclamation-sign"
+                                        aria-hidden="true"
+                                    ></span>
+                                    <span class="sr-only"></span>
+                                    <span class="msg"></span>
+                                </div>
+                                <button id="taskSubmit" type="submit">
+                                    submit
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/pm.js"></script>
-
-</body>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/pm.js"></script>
+    </body>
 </html>

@@ -1,10 +1,8 @@
 var adminId;
 
 $(document).ready(function () {
-    
-
     // GET request to figure out which user is logged in; Updates the HTML on the page
-    $.get('/api/user_data').then(function(data) {
+    $.get('/api/user_data').then(function (data) {
         // Handles routing based upon auth_level
 
         $('.member-name').text(data.username);
@@ -17,7 +15,7 @@ $(document).ready(function () {
     });
 
     // Changes Auth_level
-    $('.auth_selector').change(function() {
+    $('.auth_selector').change(function () {
         var val = this.value;
         $.get('/api/user_data').then(function (data) {
             $.post(`/api/auth_level/${data.id}/${val}`);
@@ -30,7 +28,7 @@ $(document).ready(function () {
     // CLICK EVENTS //
     $('.project-form').on('submit', handleNewProjSubmit);
     $('.user-form').on('submit', handleNewUserSubmit);
-    $(document).on("click", "#project-delete", handleProjectDelete)
+    $(document).on('click', '#project-delete', handleProjectDelete);
 
     // <------------------------------------------------------------------------>//
     // PROJECT FUNCTIONS //
@@ -50,11 +48,6 @@ $(document).ready(function () {
             $.get(`/api/username/${mgrUsernameInput}`)
                 .then(function (data) {
                     createProject(titleInput, data.id, adminId);
-                    return adminId;
-                })
-                .then((adminId) => {
-                    $('.project-cards').empty();
-                    renderProjects(adminId);
 
                     $('#title-input').val('');
                     $('#pm-input').val('');
@@ -78,11 +71,14 @@ $(document).ready(function () {
             $('#new-proj-alert').text(`${msg.title} successfully created`);
             $('#new-proj-alert').fadeIn(500);
             $('#new-proj-alert').fadeOut(500);
+
             renderProjects(adminId);
         });
     }
 
     function renderProjects(userId) {
+        $('.project-cards').empty();
+
         $.get(`/api/projects/${userId}`).then(function (data) {
             data.forEach(function (project) {
                 $('.project-cards').append(`
@@ -155,15 +151,12 @@ $(document).ready(function () {
             });
     }
 
-
     //<-------------------------------------------------------------------------------------------->//
     // PROJECT DELETE //
     $(document).on('click', '#project-delete', handleProjectDelete);
 
     //<--------------------------------------------------------------------------->//
     // PROJECT DELETE FUNCTIONS //
-
-
 
     function handleProjectDelete() {
         let projectId = $(this).attr('data-id');
