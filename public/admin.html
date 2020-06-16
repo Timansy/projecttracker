@@ -5,7 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/flatly/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/styles.css" media="screen" title="no title" />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+    <link rel="stylesheet" href="/css/views.css" media="screen" title="no title" />
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -32,20 +36,23 @@
                     </a>
             </div>
         </nav>
-        <h3 style="text-align: center;">My Projects:</h3>
+        
+        <h3 class="py-4" style="text-align: center;">My Projects</h3>
         <div class="project-cards row"></div>
         <br />
+
         <div
             class="row fixed-bottom"
             style="margin-bottom: 20px; margin-left: 20px;"
         >
-            <div class="col">
+            <div class="col-4">
                 <h3>Create New Project:</h3>
                 <form class="project-form">
-                    <label for="title">Project Title:</label>
-                    <input id="title-input" type="text" name="title" /><br />
-                    <label for="pm-username">Project Manager Username:</label>
-                    <input id="pm-input" type="text" name="pm-username" />
+                    <div class="form-group">
+                        <label for="title"></label>
+                        <input class="form-control" id="title-input" type="text" placeholder="Project Title" name="title" />
+                        <label for="pm-username"></label>
+                        <input id="pm-input" class="form-control" placeholder="Project Manager Username" type="text" name="pm-username" />
                     <div
                         style="display: none;"
                         id="new-proj-alert"
@@ -59,26 +66,28 @@
                         <span class="sr-only"></span>
                         <span class="msg"></span>
                     </div>
-                    <br />
-                    <button class="new-project-btn" type="submit">
+                    <br>
+                    <button class="new-project-btn btn" type="submit">
 
                         Create Project
                     </button>
+                    </div>
+                    
             </form>
         </div>
 
-        <div class="col">
+        <div class="col-4">
             <h3>Create New User:</h3>
             <form class="user-form">
-                <label for="username">Username:</label>
-                <input id="username-input" type="text" name="username" /><br />
-                <label for="password">Password:</label>
-                <input id="password-input" type="password" name="password" /><br />
-                <label for="password-confirm">Confirm Password:</label>
-                <input id="confirm-input" type="password" name="password-confirm" />
-                <span class="password-auth"></span><br />
-                <label for="roles">Select Role:</label>
-                <select name="roles" id="roles">
+                <label for="username"></label>
+                <input id="username-input" class="form-control" placeholder="Username" type="text" name="username" />
+                <label for="password"></label>
+                <input id="password-input" class="form-control" placeholder="Password" type="password" name="password" />
+                <label for="password-confirm"></label>
+                <input id="confirm-input" class="form-control" placeholder="Confirm Password" type="password" name="password-confirm" />
+                <span class="password-auth"></span>
+                <label for="roles"></label>
+                <select class="form-control" name="roles" id="roles">
                         <option value="project_manager">Project Manager</option>
                         <option value="developer">Developer</option>
                     </select>
@@ -96,7 +105,7 @@
                         <span class="msg"></span>
                     </div>
                     <br />
-                    <button class="new-user-btn" type="submit">
+                    <button class="new-user-btn btn" type="submit">
                         Create User
                     </button>
             </form>
