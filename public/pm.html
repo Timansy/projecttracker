@@ -8,8 +8,12 @@
             rel="stylesheet"
         />
         <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
             rel="stylesheet"
-            href="css/styles.css"
+        />
+        <link
+            rel="stylesheet"
+            href="/css/views.css"
             media="screen"
             title="no title"
         />
@@ -81,17 +85,19 @@
                         >
                             <form>
                                 <div class="form-group">
-                                    <label for="phaseTitle">Phase Title</label>
+                                    <label for="phaseTitle"></label>
                                     <input
                                         type="text"
                                         class="form-control"
                                         id="phase-title"
-                                        placeholder="Enter Phase Title"
+                                        placeholder="Phase Title"
                                     />
                                 </div>
                                 <div class="form-group">
-                                    <label for="category"
-                                        >Select Project:</label
+                                    <label
+                                        for="category"
+                                        style="color: #192a56;"
+                                        >Select Project</label
                                     >
                                     <select class="form-control" id="projectId">
                                     </select>
@@ -109,7 +115,11 @@
                                     <span class="sr-only"></span>
                                     <span class="msg"></span>
                                 </div>
-                                <button id="phaseSubmit" type="submit">
+                                <button
+                                    class="btn"
+                                    id="phaseSubmit"
+                                    type="submit"
+                                >
                                     submit
                                 </button>
                             </form>
@@ -134,21 +144,27 @@
                         >
                             <form>
                                 <div class="form-group">
-                                    <label for="taskTitle">Task Title</label>
+                                    <label for="taskTitle"></label>
                                     <input
                                         type="text"
                                         class="form-control"
                                         id="task-title"
-                                        placeholder="Enter Task Title"
+                                        placeholder="Task Title"
                                     />
                                 </div>
                                 <div class="form-group">
-                                    <label for="category">Select Phase:</label>
+                                    <label
+                                        for="category"
+                                        style="color: #192a56;"
+                                        >Select Phase:</label
+                                    >
                                     <select class="form-control" id="phaseId">
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="category"
+                                    <label
+                                        for="category"
+                                        style="color: #192a56;"
                                         >Select Assignee:</label
                                     >
                                     <select
@@ -170,7 +186,11 @@
                                     <span class="sr-only"></span>
                                     <span class="msg"></span>
                                 </div>
-                                <button id="taskSubmit" type="submit">
+                                <button
+                                    class="btn"
+                                    id="taskSubmit"
+                                    type="submit"
+                                >
                                     submit
                                 </button>
                             </form>

@@ -1,6 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // GET request for user login info; Updates the HTML on the page
-    $.get('/api/user_data').then(function(data) {
+    $.get('/api/user_data').then(function (data) {
         // Handles routing based upon auth_level
         $('.member-name').text(data.username);
         $('.member-id').text(data.id);
@@ -8,27 +8,31 @@ $(document).ready(function() {
         renderProjectBtns(data.id);
     });
 
-    $('.auth_selector').change(function() {
+    $('.auth_selector').change(function () {
         var val = this.value;
-        $.get('/api/user_data').then(function(data) {
+        $.get('/api/user_data').then(function (data) {
             $.post(`/api/auth_level/${data.id}/${val}`);
             $('.member-auth_level').text(val);
             window.location.replace(`/${val}`);
         });
     });
 
-    $('.user-projects').on('click', 'button.project-btn', handleProjectBtnClick);
+    $('.user-projects').on(
+        'click',
+        'button.project-btn',
+        handleProjectBtnClick
+    );
 
     // <------------------------------------------------------------------------>//
     // PROJECT BUTTON FUNCTIONS //
 
     function renderProjectBtns(userId) {
         $.get(`/api/task-data/user/${userId}`)
-            .then(function(data) {
+            .then(function (data) {
                 var projectIdArr = [];
 
                 // Loop through query data -- push all project Id's from data to array
-                data.forEach(function(task) {
+                data.forEach(function (task) {
                     projectIdArr.push(task.ProjectPhase.ProjectId);
                 });
 
@@ -37,16 +41,16 @@ $(document).ready(function() {
 
                 return projectIdArr;
             })
-            .then(function(projectIdArr) {
+            .then(function (projectIdArr) {
                 appendProjectBtn(projectIdArr);
             });
     }
 
     function appendProjectBtn(array) {
-        array.forEach(function(id) {
-            $.get(`/api/projects/id/${id}`).then(function(data) {
+        array.forEach(function (id) {
+            $.get(`/api/projects/id/${id}`).then(function (data) {
                 $('.user-projects').append(`
-                <button type="submit" id="${data.id}" class="project-btn">${data.title}</button>
+                <button type="submit" id="${data.id}" class="project-btn btn">${data.title}</button>
                 `);
             });
         });
@@ -64,9 +68,9 @@ $(document).ready(function() {
         let userTasksArr = [];
 
         // Getting all task data by user
-        $.get(`/api/task-data/user/${userId}`).then(function(data) {
+        $.get(`/api/task-data/user/${userId}`).then(function (data) {
             // Loop through query data and add objects, with a project id that matches this buttons id, to the user tasks array -- will create an array of objects that contains this users tasks by project
-            data.forEach(function(task) {
+            data.forEach(function (task) {
                 if (task.ProjectPhase.ProjectId === projectId) {
                     userTasksArr.push(task);
                 }
@@ -87,7 +91,7 @@ $(document).ready(function() {
         var oppositeStatusText;
 
         // Looping through the array and appending tasks...
-        array.forEach(function(task) {
+        array.forEach(function (task) {
             // Setting the variables values based on task status
             if (task.isComplete === true) {
                 oppositeVal = false;
@@ -132,18 +136,18 @@ $(document).ready(function() {
 
     // Updates task status
     function handleTaskStatusChange() {
-        $('.status_selector').change(function() {
+        $('.status_selector').change(function () {
             console.log(this.id, this.value);
 
             $.ajax({
-                    type: 'PUT',
-                    url: '/api/tasks',
-                    data: { id: this.id, isComplete: this.value }
-                })
-                .done(function() {
+                type: 'PUT',
+                url: '/api/tasks',
+                data: { id: this.id, isComplete: this.value }
+            })
+                .done(function () {
                     console.log('Task successfully updated');
                 })
-                .fail(function(err) {
+                .fail(function (err) {
                     if (err) throw err;
                 });
         });
