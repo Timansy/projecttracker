@@ -10,7 +10,7 @@ module.exports = function (app) {
         if (req.user) {
             res.redirect('/in');
         }
-        res.sendFile(path.join(__dirname, '../public/logindg.html'));
+        res.sendFile(path.join(__dirname, '../public/login.html'));
     });
 
     app.get('/login', function (req, res) {
@@ -18,7 +18,7 @@ module.exports = function (app) {
         if (req.user) {
             res.redirect('/in');
         }
-        res.sendFile(path.join(__dirname, '../public/logindg.html'));
+        res.sendFile(path.join(__dirname, '../public/login.html'));
     });
 
     app.get('/password-reset', function (req, res) {
