@@ -45,7 +45,7 @@ $(document).ready(function () {
 
             return;
         } else {
-            $.get(`/api/username/${mgrUsernameInput}`)
+            $.get(`/api/users/username/${mgrUsernameInput}`)
                 .then(function (data) {
                     createProject(titleInput, data.id, adminId);
 
@@ -133,7 +133,7 @@ $(document).ready(function () {
 
     // Creates new user and posts to DB from user input
     function createUser(username, password, authLevel) {
-        $.post('/api/create-user', {
+        $.post('/api/users/create-user', {
             username: username,
             password: password,
             auth_level: authLevel

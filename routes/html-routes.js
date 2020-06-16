@@ -21,6 +21,10 @@ module.exports = function (app) {
         res.sendFile(path.join(__dirname, '../public/login.html'));
     });
 
+    app.get('/register', (req, res) => {
+        res.sendFile(path.join(__dirname, '../public/register.html'));
+    });
+
     app.get('/password-reset', function (req, res) {
         res.sendFile(path.join(__dirname, '../public/reset.html'));
     });

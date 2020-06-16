@@ -23,13 +23,11 @@ app.use(passport.session());
 
 // Requiring our routes
 require('./routes/html-routes.js')(app);
-require('./routes/api-routes.js')(app);
+require('./routes/auth-api-routes.js')(app);
 require('./routes/user-api-routes')(app);
 require('./routes/project-api-routes')(app);
 require('./routes/phase-api-routes')(app);
 require('./routes/task-api-routes')(app);
-require('./routes/dev-api-routes')(app);
-require('./routes/auth-routes')(app, passport);
 
 // Syncing our database and logging a message to the user upon success
 db.sequelize.sync().then(function () {
