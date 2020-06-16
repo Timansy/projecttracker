@@ -2,9 +2,9 @@
     Team Sprinter
 
 #### Description:
-    This application enhances you and your team's ability to get through those tough team sprints by creating a visual of 
-    the tasks and phases that are needed to get it done. Populate the project board with whatever you need to get it done. 
-    Let your team worry about the work; our team will worry about the planning.
+    This application enhances you and your team's ability to get through those tough team sprints by creating a 
+    visual of the tasks and phases that are needed to get it done. Populate the project board with whatever you
+    need to get it done. Let your team worry about the work; our team will worry about the planning.
 
 #### Table of Contents:
         -Installation
