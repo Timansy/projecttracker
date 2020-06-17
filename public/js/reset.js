@@ -23,10 +23,18 @@ $(document).ready(function () {
         ) {
             $('div#alert').text('Please fill out entire form');
             $('#alert').fadeIn(500);
+
+            setTimeout(function () {
+                $('#alert').fadeOut(500);
+            }, 2000);
             return;
         } else if (userData.password !== userData.passwordConfirm) {
             $('div#alert').text('Passwords do not match');
             $('#alert').fadeIn(500);
+
+            setTimeout(function () {
+                $('#alert').fadeOut(500);
+            }, 2000);
             return;
         } else {
             resetPassword(userData.username, userData.password);

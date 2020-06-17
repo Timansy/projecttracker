@@ -18,9 +18,17 @@ $(document).ready(function () {
         if (!userData.username || !userData.password) {
             $('div#alert').text('Please fill out entire form');
             $('#alert').fadeIn(500);
+
+            setTimeout(function () {
+                $('#alert').fadeOut(500);
+            }, 2000);
         } else if (userData.password !== userData.passwordConfirm) {
             $('div#alert').text('Passwords do not match');
             $('#alert').fadeIn(500);
+
+            setTimeout(function () {
+                $('#alert').fadeOut(500);
+            }, 2000);
         } else {
             signUpUser(userData.username, userData.password);
             usernameInput.val('');

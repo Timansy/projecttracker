@@ -182,6 +182,7 @@ $(document).ready(function () {
         event.preventDefault();
         let newPhase = phaseTitleInput.val().trim();
         if (!newPhase) {
+            $('#add-phase-alert').addClass('alert-danger');
             $('#add-phase-alert').text('Please enter a Phase Title');
             $('#add-phase-alert').fadeIn(500);
 
@@ -236,6 +237,7 @@ $(document).ready(function () {
         event.preventDefault();
         let newTask = taskTitleInput.val().trim();
         if (!newTask) {
+            $('#add-task-alert').addClass('alert-danger');
             $('#add-task-alert').text('Please enter a Task Title');
             $('#add-task-alert').fadeIn(500);
 

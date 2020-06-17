@@ -40,8 +40,13 @@ $(document).ready(function () {
         let mgrUsernameInput = $('#pm-input').val().trim();
 
         if (!titleInput || !mgrUsernameInput) {
+            $('#new-proj-alert').addClass('alert-danger');
             $('#new-proj-alert').text('Please fill out entire form');
             $('#new-proj-alert').fadeIn(500);
+
+            setTimeout(function () {
+                $('#new-proj-alert').fadeOut(500);
+            }, 2000);
 
             return;
         } else {
@@ -68,9 +73,13 @@ $(document).ready(function () {
             projectMgrIdId: projectMgrId,
             UserId: adminId
         }).done(function (msg) {
+            $('#new-proj-alert').addClass('alert-info');
             $('#new-proj-alert').text(`${msg.title} successfully created`);
             $('#new-proj-alert').fadeIn(500);
-            $('#new-proj-alert').fadeOut(500);
+
+            setTimeout(function () {
+                $('#new-proj-alert').fadeOut(500);
+            }, 2000);
 
             renderProjects(adminId);
         });
@@ -125,14 +134,24 @@ $(document).ready(function () {
         };
 
         if (!userData.username || !userData.password) {
+            $('#new-user-alert').addClass('alert-danger');
             $('#new-user-alert').text('Please fill out entire form');
             $('#new-user-alert').fadeIn(500);
 
-            setTimeout();
+            setTimeout(function () {
+                $('#new-user-alert').fadeOut(500);
+            }, 2000);
+
             return;
         } else if (userData.password !== userData.passwordConfirm) {
+            $('#new-user-alert').addClass('alert-danger');
             $('#new-user-alert').text('Passwords do not match');
             $('#new-user-alert').fadeIn(500);
+
+            setTimeout(function () {
+                $('#new-user-alert').fadeOut(500);
+            }, 2000);
+
             return;
         } else {
             createUser(userData.username, userData.password, roleInput);

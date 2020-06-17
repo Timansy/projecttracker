@@ -9,7 +9,7 @@ $(document).ready(function () {
     resetBtn.on('click', handleResetRedirect);
     registerBtn.on('click', handleRegisterRedirect);
 
-    // When the form is submitted, validate there's an email and password entered
+    // When the form is submitted, validate there's a username and password entered
     loginForm.on('submit', function (event) {
         event.preventDefault();
         var userData = {
@@ -18,6 +18,12 @@ $(document).ready(function () {
         };
 
         if (!userData.username || !userData.password) {
+            $('div#alert').text('Invalid Username or Password');
+            $('#alert').fadeIn(500);
+
+            setTimeout(function () {
+                $('#alert').fadeOut(500);
+            }, 2000);
             return;
         }
 
@@ -41,6 +47,10 @@ $(document).ready(function () {
                 if (err) {
                     $('div#alert').text('Invalid Username or Password');
                     $('#alert').fadeIn(500);
+
+                    setTimeout(function () {
+                        $('#alert').fadeOut(500);
+                    }, 2000);
                 }
             });
     }
