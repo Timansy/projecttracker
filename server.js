@@ -1,6 +1,7 @@
 // Requiring necessary npm packages
 var express = require('express');
 var session = require('express-session');
+var compression = require('compression');
 // Requiring passport as we've configured it
 var passport = require('./config/passport');
 
@@ -12,6 +13,8 @@ var db = require('./models');
 var app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(compression());
 app.use(express.static('public'));
 
 // We need to use sessions to keep track of our user's login status
